@@ -1,0 +1,40 @@
+.appWrapper {
+  
+}
+
+header {
+  display: grid;
+  height: 10vh;
+}
+
+header h1 {
+  margin: auto;
+  font-family: 'Russo One', sans-serif;
+  font-size: 3rem;
+}
+
+
+/* nav Bar */
+.navBar {
+  border: 1px solid black;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.navBar li {
+  list-style: none;
+  text-align: center;
+  font-family: 'Russo One', sans-serif;
+  font-size: 2rem;
+  width: 100%;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  cursor: pointer;
+  transition: .6s ease-out;
+}
+
+.navBar li:hover {
+  background-color: rgb(42, 32, 136);
+  color: white;
+}
