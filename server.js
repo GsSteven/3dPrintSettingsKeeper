@@ -5,7 +5,9 @@ const cors = require('cors');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+
 const MONGO_URI = process.env.MONGO_URI;
+const PORT = process.env.PORT || 8080;
 
 //imported routes
 const prints = require('./routes/prints');
