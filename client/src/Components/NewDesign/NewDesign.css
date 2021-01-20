@@ -15,7 +15,7 @@ form {
     align-items: center;
 }
 
-label {
+.mainLabel {
     color: white;
     font-family: 'Orbitron', sans-serif;
     font-weight: 500;
@@ -52,10 +52,40 @@ label {
     grid-template-columns: 1fr 1fr;
 }
 
+/* add setting section */
+
 .settingsInput {
     height: 100%;
     background-color: rgb(245, 245, 245);
     overflow: hidden;
+}
+
+.settingsSubclass {
+    border-bottom: 2px solid black;
+}
+
+.subClass {
+    margin-left: 2em;
+}
+
+.subClass:hover {
+    border: 1px solid rgb(10, 40, 104);
+}
+
+.subClassInput {
+    width: 5em;
+    margin-left: 2em;
+}
+
+#fillGapsBetweenWalls,
+#infillPattern,
+#supportPlacement {
+    width: 7.5em;
+}
+
+.unit {
+    display: inline;
+    font-size: .9em
 }
 
 .settingsDisplay {
