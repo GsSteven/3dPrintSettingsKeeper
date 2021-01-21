@@ -1,7 +1,7 @@
 .newDesignWrapper {
     width: 100%;
     margin: 0 auto;
-    background-image: url('./../../images/background2.jpg');
+    background-image: url('./../../images/background.jpg');
     background-size: cover;
 }
 
@@ -20,6 +20,22 @@ form {
     font-family: 'Orbitron', sans-serif;
     font-weight: 500;
     font-size: 1.5em;
+}
+
+#title,
+#machineUsed,
+#printTime {
+    text-align: center;
+    font-size: 1.5em;
+    font-family: "Russo One", sans-serif;
+}
+
+#machineUsed {
+    margin-bottom: .5em;
+}
+
+#printTime {
+    width: 3em;
 }
 
 .uploadWrapper {
@@ -44,42 +60,65 @@ form {
 
 .settings {
     border: 1px solid black;
+    background-color: rgb(245, 245, 245);
     width: 60%;
-    height: auto;
     min-height: 40rem;
     margin: 20px 0;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
 }
 
 /* add setting section */
 
 .settingsInput {
     height: 100%;
-    background-color: rgb(245, 245, 245);
     overflow: hidden;
 }
 
+.settingSubject {
+    cursor: pointer;
+    margin-top: .5em;
+    padding-left: 3em;
+    font-size: 1.3em;
+}
+
+.settingSubject:hover {
+    background-color: rgb(226, 225, 225);
+}
+
+.arrowIcon,
+.rotateArrow {
+    height: 1em;
+    margin: auto 0;
+    pointer-events: none;
+    transition: .3s linear;
+}
+
+.rotateArrow {
+    transform: rotate(90deg);
+}
+
 .settingsSubclass {
-    border-bottom: 2px solid black;
+    margin-bottom: 1em;
+    background-color: rgb(226, 225, 225);
 }
 
-.subClass {
-    margin-left: 2em;
+.subclass {
+    margin-left: 6em;
+    font-weight: 600;
 }
 
-.subClass:hover {
+.subclass:hover {
     border: 1px solid rgb(10, 40, 104);
 }
 
 .subClassInput {
     width: 5em;
-    margin-left: 2em;
+    margin-left: 1em;
 }
 
 #fillGapsBetweenWalls,
 #infillPattern,
-#supportPlacement {
+#supportPlacement,
+#printSequence {
     width: 7.5em;
 }
 
@@ -88,6 +127,31 @@ form {
     font-size: .9em
 }
 
-.settingsDisplay {
-    background-color: rgb(229, 226, 226);
+#submitButton {
+    font-family: "Russo One", sans-serif;
+    font-size: 30px;
+    width: 100px;
+    height: 50px;
+    margin-top: 1em;
+    cursor: pointer;
+    transition: .2s linear;
+}
+
+#submitButton:hover {
+    background-color: rgb(5, 105, 9);
+    color: rgb(226, 225, 225);
+}
+
+@media screen and (max-width: 1000px){
+    .settings {
+        width: 100%;
+    }
+
+    .settingSubject {
+        padding-left: 0;
+    }
+
+    .subclass {
+        margin-left: .5em;
+    }
 }

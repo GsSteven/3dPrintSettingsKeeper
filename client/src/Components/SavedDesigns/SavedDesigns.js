@@ -9,22 +9,24 @@ class SavedDesigns extends React.Component {
     render() {
         return (
             <div className="savedDesignsWrapper">
-                <Print />
-                <Print />
-                <Print />
-                <Print />
-                <Print />
-                <Print />
-                <Print />
-                <Print />
-                <Print />
-                <Print />
-                <Print />
-                <Print />
-                <Print />
-                <Print />
-                <Print />
-                <Print />
+                <div className="designs">
+                    <Print />
+                    <Print />
+                    <Print />
+                    <Print />
+                    <Print />
+                    <Print />
+                    <Print />
+                    <Print />
+                    <Print />
+                    <Print />
+                    <Print />
+                    <Print />
+                    <Print />
+                    <Print />
+                    <Print />
+                    <Print />
+                </div>
             </div>
         );
     }

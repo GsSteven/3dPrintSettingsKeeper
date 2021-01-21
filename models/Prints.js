@@ -8,12 +8,20 @@ const PrintSchema = new Schema({
         type: String,
         required: true
     },
-    printFile: {
-        type: File,
+    printImage: {
+        type: String,
         required: true
     },
     settings: {
         type: Array
+    },
+    machineUsed: {
+        type: String,
+        required: true
+    },
+    printTime: {
+        type: Number,
+        required: true
     },
     date: {
         type: Date,

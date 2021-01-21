@@ -1,6 +1,14 @@
 .savedDesignsWrapper {
+    background-image: url('../../images/background.jpg');
+    background-size: cover;
+}
+
+.designs {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-around;
+    width: 80%;
+    background-color: rgb(10, 40, 104);
+    margin: 0 auto;
 }
