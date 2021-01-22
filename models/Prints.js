@@ -4,28 +4,9 @@ const Schema = mongoose.Schema;
 //Schema for prints
 
 const PrintSchema = new Schema({
-    title: {
-        type: String,
+    printSettings: {
+        type: Object,
         required: true
-    },
-    printImage: {
-        type: String,
-        required: true
-    },
-    settings: {
-        type: Array
-    },
-    machineUsed: {
-        type: String,
-        required: true
-    },
-    printTime: {
-        type: Number,
-        required: true
-    },
-    date: {
-        type: Date,
-        default: Date.now
     }
 });
 

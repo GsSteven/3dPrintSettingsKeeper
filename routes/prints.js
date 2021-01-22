@@ -15,5 +15,20 @@ router.get('', (req, res) => {
         })
 });
 
+router.post('', (req, res) => {
+
+    const newPrint = new Print({
+        printSettings: req.body
+    });
+    newPrint.save()
+        .then(() => {
+            res.status(200).send();
+        })
+        .catch(e => {
+            console.log(e);
+            res.status(400).send('error');
+        });
+});
+
 
 module.exports = router;

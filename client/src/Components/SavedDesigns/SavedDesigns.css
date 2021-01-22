@@ -9,6 +9,7 @@
     align-items: center;
     justify-content: space-around;
     width: 80%;
+    min-height: 80vh;
     background-color: rgb(10, 40, 104);
     margin: 0 auto;
 }

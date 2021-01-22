@@ -15,6 +15,8 @@ form {
     align-items: center;
 }
 
+/* label design and image upload */
+
 .mainLabel {
     color: white;
     font-family: 'Orbitron', sans-serif;
@@ -56,7 +58,7 @@ form {
     display: none;
 }
 
-/* settings windows */
+/* settings */
 
 .settings {
     border: 1px solid black;
@@ -65,8 +67,6 @@ form {
     min-height: 40rem;
     margin: 20px 0;
 }
-
-/* add setting section */
 
 .settingsInput {
     height: 100%;
@@ -97,8 +97,20 @@ form {
 }
 
 .settingsSubclass {
+    opacity: 0;
+    height: 0;
+    pointer-events: none;
+    transform: translateX(50px);
+}
+
+.displaySubclass {
+    opacity: 1;
+    transform: translateX(0px);
+    transition: .5s ease-in;
+}
+
+.settingsSubclass {
     margin-bottom: 1em;
-    background-color: rgb(226, 225, 225);
 }
 
 .subclass {

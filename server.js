@@ -11,6 +11,7 @@ const PORT = process.env.PORT || 8080;
 
 //imported routes
 const prints = require('./routes/prints');
+const imageUploader = require('./routes/imageUploadRouter');
 
 //mongoDB connect
 mongoose.connect(MONGO_URI || 'mongodb://localhost/prints', {
@@ -31,7 +32,8 @@ app.use(bodyParser.json());
 app.use(cors());
 
 //route middleware
-app.use('api/prints', prints);
+app.use('/api/prints', prints);
+app.use('/api/upload', imageUploader);
 
 app.listen(PORT, () => {
     console.log(`Listening on port: ${PORT}`);
