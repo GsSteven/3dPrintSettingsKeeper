@@ -8,7 +8,7 @@ class App extends React.Component {
     super(props);
     this.state = {
       prints: [],
-      currentPage: 'NewDesign'
+      currentPage: 'SavedDesigns'
     }
     this.changeDisplay = this.changeDisplay.bind(this);
     this.displayPage = this.displayPage.bind(this);
@@ -42,7 +42,7 @@ class App extends React.Component {
           <li id="NewDesign" onClick={this.changeDisplay}>New design</li>
         </ul>
         {this.displayPage()}
-        <footer>Designed By: Steven Gsell</footer>
+        <footer>Created By: Steven Gsell</footer>
       </div>
     );
   }

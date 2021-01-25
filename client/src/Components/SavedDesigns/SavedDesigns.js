@@ -28,7 +28,9 @@ class SavedDesigns extends React.Component {
     render() {
         const prints = this.state.prints.map(print => {
             return (
-                <Print printSettings={print.printSettings}
+                <Print
+                    printSettings={print.printSettings}
+                    key={print.printSettings.title + print.printSettings.printTime}
                 />
             );
         });

@@ -3,10 +3,11 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    width: 250px;
-    height: 250px;
+    width: 300px;
+    height: 300px;
     text-align: center;
-    background-color: rgb(19, 73, 189);;
+    background-color: rgb(19, 73, 189);
+    border-radius: 1px;
     margin: 30px;
     box-shadow: 8px 8px 15px #111111;
     cursor: pointer;
@@ -22,7 +23,8 @@
     height: 80%;
 }
 
-.printTime {
+.printTime,
+.machineUsed {
     font-family: 'Orbitron', sans-serif;
     font-weight: 400;
 }

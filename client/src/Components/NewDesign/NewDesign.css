@@ -46,15 +46,46 @@ form {
     margin: 20px 0;
 }
 
-/* image div */
+/* image upload */
 
 #printImg img {
     width: 100%;
     border-radius: 2px;
+    padding-bottom: .5em;
     cursor: pointer;
 }
 
 #img {
+    display: none;
+}
+
+/* file upload */
+
+.uploadButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    height: 40px;
+    width: 150px;
+    font-size: .8em;
+    font-family: "Russo One", sans-serif;
+    background-color: rgb(19, 73, 189);
+    cursor: pointer;
+    border: 1px solid black;
+    border-radius: 2px;
+}
+
+.uploadButton img {
+    height: 60%;
+    padding-right: 10px;
+}
+
+.listFile {
+    font-size: .5em;
+}
+
+#printFile {
     display: none;
 }
 
@@ -68,11 +99,6 @@ form {
     margin: 20px 0;
 }
 
-.settingsInput {
-    height: 100%;
-    overflow: hidden;
-}
-
 .settingSubject {
     cursor: pointer;
     margin-top: .5em;
@@ -83,6 +109,8 @@ form {
 .settingSubject:hover {
     background-color: rgb(226, 225, 225);
 }
+
+/* arrow animations */
 
 .arrowIcon,
 .rotateArrow {
@@ -95,6 +123,8 @@ form {
 .rotateArrow {
     transform: rotate(90deg);
 }
+
+/* settings slide in animations */
 
 .settingsSubclass {
     opacity: 0;
@@ -139,7 +169,14 @@ form {
     font-size: .9em
 }
 
+.loading {
+    height: 80%;
+}
+
 #submitButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-family: "Russo One", sans-serif;
     font-size: 30px;
     width: 100px;

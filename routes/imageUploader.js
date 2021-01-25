@@ -20,7 +20,9 @@ const upload = multer({
         bucket: 'printsettings',
         acl: 'public-read',
         metadata: (req, file, cb) => {
-            cb(null, { fieldName: 'testing' });
+            cb(null, {
+                fieldName: 'testing',
+            });
         },
         key: (req, file, cb) => {
             cb(null, Date.now().toString());

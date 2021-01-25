@@ -1,0 +1,47 @@
+.expandedPrintWrapper {
+    background-color: rgb(245, 245, 245);
+    width: 75%;
+    min-height: 50%;
+    position: absolute;
+    padding: 2em 0;
+    top: 20em;
+    cursor: default;
+}
+
+.closeButton {
+    cursor: pointer;
+    margin-top: 10px;
+    height: 30px;
+    width: 30px;
+    background-color: rgb(131, 4, 4);
+    color: rgb(245, 245, 245);
+    border-radius: 4px;
+    font-size: 20px;
+    position: absolute;
+    right: 100px;
+}
+
+form {
+    border: 1px solid black;
+}
+
+.downloadButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    height: 40px;
+    width: 150px;
+    font-size: .9em;
+    font-family: "Russo One", sans-serif;
+    background-color: rgb(19, 73, 189);
+    color: rgb(245, 245, 245);
+    cursor: pointer;
+    border: 1px solid black;
+    border-radius: 2px;
+}
+
+.downloadButton img {
+    height: 60%;
+    padding-right: 5px;
+}
