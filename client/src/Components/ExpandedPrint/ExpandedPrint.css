@@ -45,3 +45,9 @@ form {
     height: 60%;
     padding-right: 5px;
 }
+
+.displaySettingSubject {
+    cursor: pointer;
+    margin-top: .5em;
+    font-size: 1.3em;
+}

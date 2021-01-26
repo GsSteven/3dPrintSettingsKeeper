@@ -193,7 +193,7 @@ class ExpandedPrint extends React.Component {
                     />
                     <div className="uploadWrapper">
                         <label htmlFor="img" className="mainLabel">
-                            <p>Add image</p>
+                            <p>Add/Change image</p>
                             <div id="printImg">
                                 <img src={this.props.printSettings.img ? this.props.printSettings.img : defaultImg} alt=''></img>
                             </div>
@@ -215,7 +215,7 @@ class ExpandedPrint extends React.Component {
 
 
                         {/* Quality */}
-                        <h4 className="settingSubject" id="quality" onClick={this.handleToggle}>
+                        <h4 className="displaySettingSubject" id="quality" onClick={this.handleToggle}>
                             Quality <img className="arrowIcon" src={arrow} alt="arrowIcon" />
                         </h4>
                         <div className="settingsSubclass" id="qualitySettings">
@@ -259,7 +259,7 @@ class ExpandedPrint extends React.Component {
 
 
                         {/* Shell */}
-                        <h4 className="settingSubject" id="shell" onClick={this.handleToggle}>
+                        <h4 className="displaySettingSubject" id="shell" onClick={this.handleToggle}>
                             Shell <img className="arrowIcon" src={arrow} alt="arrowIcon" />
                         </h4>
                         <div className="settingsSubclass" id="shellSettings">
@@ -311,7 +311,7 @@ class ExpandedPrint extends React.Component {
 
 
                         {/* Infill */}
-                        <h4 className="settingSubject" id="infill" onClick={this.handleToggle}>
+                        <h4 className="displaySettingSubject" id="infill" onClick={this.handleToggle}>
                             Infill <img className="arrowIcon" src={arrow} alt="arrowIcon" />
                         </h4>
                         <div className="settingsSubclass" id="infillSettings">
@@ -362,7 +362,7 @@ class ExpandedPrint extends React.Component {
 
 
                         {/* Material */}
-                        <h4 className="settingSubject" id="material" onClick={this.handleToggle}>
+                        <h4 className="displaySettingSubject" id="material" onClick={this.handleToggle}>
                             Material <img className="arrowIcon" src={arrow} alt="arrowIcon" />
                         </h4>
                         <div className="settingsSubclass" id="materialSettings">
@@ -394,7 +394,7 @@ class ExpandedPrint extends React.Component {
 
 
                         {/* Speed */}
-                        <h4 className="settingSubject" id="speed" onClick={this.handleToggle}>
+                        <h4 className="displaySettingSubject" id="speed" onClick={this.handleToggle}>
                             Speed <img className="arrowIcon" src={arrow} alt="arrowIcon" />
                         </h4>
                         <div className="settingsSubclass" id="speedSettings">
@@ -450,7 +450,7 @@ class ExpandedPrint extends React.Component {
 
 
                         {/* Travel */}
-                        <h4 className="settingSubject" id="travel" onClick={this.handleToggle}>
+                        <h4 className="displaySettingSubject" id="travel" onClick={this.handleToggle}>
                             Travel <img className="arrowIcon" src={arrow} alt="arrowIcon" />
                         </h4>
                         <div className="settingsSubclass" id="travelSettings">
@@ -500,7 +500,7 @@ class ExpandedPrint extends React.Component {
 
 
                         {/* Cooling */}
-                        <h4 className="settingSubject" id="cooling" onClick={this.handleToggle}>
+                        <h4 className="displaySettingSubject" id="cooling" onClick={this.handleToggle}>
                             Cooling <img className="arrowIcon" src={arrow} alt="arrowIcon" />
                         </h4>
                         <div className="settingsSubclass" id="coolingSettings">
@@ -552,7 +552,7 @@ class ExpandedPrint extends React.Component {
 
 
                         {/* Support */}
-                        <h4 className="settingSubject" id="support" onClick={this.handleToggle}>
+                        <h4 className="displaySettingSubject" id="support" onClick={this.handleToggle}>
                             Support <img className="arrowIcon" src={arrow} alt="arrowIcon" />
                         </h4>
                         <div className="settingsSubclass" id="supportSettings">
@@ -617,7 +617,7 @@ class ExpandedPrint extends React.Component {
 
 
                         {/* Build Plate Adhesion */}
-                        <h4 className="settingSubject" id="buildPlateAdhesion" onClick={this.handleToggle}>
+                        <h4 className="displaySettingSubject" id="buildPlateAdhesion" onClick={this.handleToggle}>
                             Build Plate Adhesion <img className="arrowIcon" src={arrow} alt="arrowIcon" />
                         </h4>
                         <div className="settingsSubclass" id="buildPlateAdhesionSettings">
@@ -636,7 +636,7 @@ class ExpandedPrint extends React.Component {
 
 
                         {/* Specail Modes */}
-                        <h4 className="settingSubject" id="specailModes" onClick={this.handleToggle}>
+                        <h4 className="displaySettingSubject" id="specailModes" onClick={this.handleToggle}>
                             Specail Modes <img className="arrowIcon" src={arrow} alt="arrowIcon" />
                         </h4>
                         <div className="settingsSubclass" id="specailModesSettings">
@@ -665,7 +665,7 @@ class ExpandedPrint extends React.Component {
 
 
                         {/* Experimental */}
-                        <h4 className="settingSubject" id="experimental" onClick={this.handleToggle}>
+                        <h4 className="displaySettingSubject" id="experimental" onClick={this.handleToggle}>
                             Experimental <img className="arrowIcon" src={arrow} alt="arrowIcon" />
                         </h4>
                         <div className="settingsSubclass" id="experimentalSettings">

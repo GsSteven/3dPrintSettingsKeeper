@@ -3,7 +3,7 @@ const aws = require('aws-sdk');
 const userKey = process.env.USER_KEY;
 const userSecret = process.env.SECRET_KEY;
 const multer = require('multer');
-const multerS3 = require('multer-s3');
+const multerS3 = require('multer-s3-v2');
 
 
 aws.config.update({
@@ -19,13 +19,14 @@ const upload = multer({
         s3: s3,
         bucket: 'printsettings',
         acl: 'public-read',
+        contentType: multerS3.AUTO_CONTENT_TYPE,
         metadata: (req, file, cb) => {
             cb(null, {
-                fieldName: 'testing',
+
             });
         },
         key: (req, file, cb) => {
-            cb(null, Date.now().toString());
+            cb(null, Date.now().toString() + file.originalname);
         }
     })
 });

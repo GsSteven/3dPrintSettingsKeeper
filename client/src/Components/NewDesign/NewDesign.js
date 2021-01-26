@@ -119,15 +119,16 @@ class NewDesign extends React.Component {
         //if image get the files not value
         if (setting === "img") {
             //set temp img in case file is chosen but not submitted to prevent unneeded upload
+            console.log(e.target.files[0]);
             this.setState({
                 tempImg: URL.createObjectURL(e.target.files[0]),
                 img: e.target.files[0]
             })
         } else if (setting === 'printFile') {
+            console.log(e.target.files[0]);
             this.setState({
                 file: e.target.files[0]
             })
-            console.log(e.target.files[0]);
         } else {
             this.setState({ [setting]: value });
         }
@@ -150,7 +151,7 @@ class NewDesign extends React.Component {
         if (payLoad.img) {
             const imgFormData = new FormData();
             imgFormData.append('image', this.state.img);
-            await axios.post(`/api/upload`, imgFormData, { headers: { 'Content-Type': 'multipart/form-data' } })
+            await axios.post(`/api/upload`, imgFormData, { headers: { 'Content-Type': this.state.img.type } })
                 .then(response => {
                     const imgUrl = response.data.imageUrl;
                     return imgUrl;
@@ -166,7 +167,7 @@ class NewDesign extends React.Component {
         if (payLoad.file) {
             const fileData = new FormData();
             fileData.append('image', this.state.file);
-            await axios.post(`/api/upload`, file, { headers: { 'Content-Type': 'multipart/form-data' } })
+            await axios.post(`/api/upload`, fileData, { headers: { 'Content-Type': 'application/sla' } })
                 .then(response => {
                     const fileUrl = response.data.imageUrl;
                     return fileUrl;

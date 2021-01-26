@@ -29,16 +29,23 @@ class Print extends React.Component {
         }
     }
 
+    limitText(text) {
+        if (text.length > 11) {
+            return text.slice(0, 11) + "...";
+        }
+        else return text;
+    }
+
     render() {
         const settings = this.props.printSettings;
 
         return (
             <div className="printWrapper" >
-                <h1 className="printTitle">{settings.title}</h1>
+                <h1 className="printTitle">{this.limitText(settings.title)}</h1>
                 <div className="print">
                     <img className="printThumb" src={this.setImg()} alt="print design" onClick={this.expandPrint} />
                     <h3 className="printTime">Print time: {settings.printTime}hr(s)</h3>
-                    <h2 className="machineUsed">{settings.machineUsed}</h2>
+                    <h2 className="machineUsed">{this.limitText(settings.machineUsed)}</h2>
                 </div>
                 {this.state.expanded &&
                     <ExpandedPrint
