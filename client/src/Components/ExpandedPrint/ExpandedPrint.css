@@ -9,16 +9,28 @@
 }
 
 .closeButton {
-    cursor: pointer;
-    margin-top: 10px;
+    display: grid;
+    grid-template-rows: 1fr 1fr;
     height: 30px;
     width: 30px;
-    background-color: rgb(131, 4, 4);
-    color: rgb(245, 245, 245);
-    border-radius: 4px;
-    font-size: 20px;
-    position: absolute;
-    right: 100px;
+    position: relative;
+    cursor: pointer;
+    left: 90%;
+}
+
+.closeButton div{
+    background-color: black;
+    border-radius: 5px;
+    width: 30px;
+    height: 5px;
+}
+
+.close1{
+    transform: rotate(45deg) translate(8px, 9px);
+}
+
+.close2{
+    transform: rotate(-45deg) translate(1px, -3px);
 }
 
 form {
@@ -50,4 +62,22 @@ form {
     cursor: pointer;
     margin-top: .5em;
     font-size: 1.3em;
+}
+
+#updateButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Russo One", sans-serif;
+    font-size: 30px;
+    width: 130px;
+    height: 50px;
+    margin-top: 1em;
+    cursor: pointer;
+    transition: .2s linear;
+}
+
+#updateButton:hover {
+    background-color: rgb(5, 105, 9);
+    color: rgb(226, 225, 225);
 }

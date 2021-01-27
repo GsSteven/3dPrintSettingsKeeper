@@ -20,6 +20,16 @@ class ExpandedPrint extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
+    async removeFileFromHost() {
+        const fileName = this.props.printSettings.img.split('.com/')[1];
+        console.log(fileName);
+        await axios({
+            method: 'delete',
+            url: '/api/upload',
+            params: { fileName: fileName }
+        });
+    }
+
     setAdhesionType(e) {
         const value = e.target.value;
 
@@ -81,11 +91,11 @@ class ExpandedPrint extends React.Component {
     buttonDisplay() {
         switch (this.state.buttonDisplay) {
             case 'save':
-                return 'save';
+                return 'update';
             case 'loading':
                 return <img src={loading} alt="loading" className="loading" />;
             case 'saved':
-                return 'saved';
+                return 'updated';
             case 'error':
                 return 'error';
             default:
@@ -113,12 +123,14 @@ class ExpandedPrint extends React.Component {
     }
 
     handleChange(e) {
+        console.log(e.target);
         const setting = e.target.name;
         const value = e.target.value;
         //if image get the files not value
         if (setting === "img") {
             //set temp img in case file is chosen but not submitted to prevent unneeded upload
             this.setState({
+                previousImg: this.props.printSettings.img,
                 tempImg: URL.createObjectURL(e.target.files[0]),
                 img: e.target.files[0]
             })
@@ -133,13 +145,17 @@ class ExpandedPrint extends React.Component {
 
         this.setState({ buttonDisplay: 'loading' });
 
-        //filter out toggle states and tempImg for payLoad
+        //filter out unneeded states for payLoad
         for (const key in this.state) {
-            if (key.indexOf("Toggle") === -1 && key !== "tempImg" && key !== "buttonDisplay") {
+            if (key.indexOf("Toggle") === -1 && key !== "tempImg" && key !== "buttonDisplay" && key !== "previousImg") {
                 payLoad[key] = this.state[key];
             }
         }
 
+        //if image was changed, remove original image from hosting before uploading new
+        if (this.state.previousImg) {
+            this.removeFileFromHost(this.state.previousImg);
+        }
         //if custom image is added, create form data to upload to image hosting
         if (payLoad.img) {
             const imgFormData = new FormData();
@@ -157,11 +173,18 @@ class ExpandedPrint extends React.Component {
                     console.error(e);
                 });
         }
-
-        await axios.post('/api/prints', payLoad)
+        await axios({
+            method: 'put',
+            url: '/api/prints',
+            data: {
+                id: this.props.id,
+                settings: payLoad
+            }
+        })
             .then(response => {
                 if (response.status === 200) {
                     this.setState({ buttonDisplay: 'saved' });
+                    this.props.refresh();
                 } else {
                     this.setState({ buttonDisplay: 'error' })
                 }
@@ -173,9 +196,21 @@ class ExpandedPrint extends React.Component {
     }
 
     componentDidMount() {
+        //fill in saved values
         for (const key in this.props.printSettings) {
+            const input = document.getElementById(key);
             if (key !== 'file') {
-                const input = document.getElementById(key);
+                //if key is a select input set the saved option as selected
+                if (input.childNodes[1]) {
+                    input.childNodes.forEach(option => {
+                        if (option.value === this.props.printSettings[key]) {
+                            option.setAttribute('selected', 'selected');
+                        }
+                    })
+                }
+                if (this.props.printSettings[key] === 'on') {
+
+                }
                 input.defaultValue = this.props.printSettings[key];
             }
         }
@@ -183,7 +218,10 @@ class ExpandedPrint extends React.Component {
     render() {
         return (
             <div className="expandedPrintWrapper">
-                <button className="closeButton" onClick={this.props.close}>X</button>
+                <div className="closeButton" onClick={this.props.close}>
+                    <div className="close1"></div>
+                    <div className="close2"></div>
+                </div>
                 <form onSubmit={this.handleSubmit}>
                     <label htmlFor="title" className="mainLabel">Title</label>
                     <input id="title"
@@ -698,7 +736,7 @@ class ExpandedPrint extends React.Component {
                         required
                         onChange={this.handleChange}
                     />
-                    <button id="submitButton"
+                    <button id="updateButton"
                         type='submit'>
                         {this.buttonDisplay()}
                     </button>

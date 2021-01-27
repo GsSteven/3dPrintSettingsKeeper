@@ -30,5 +30,27 @@ router.post('', (req, res) => {
         });
 });
 
+router.put('', (req, res) => {
+    const id = req.body.id;
+    const newSettings = req.body.settings;
+    Print.findById(id)
+        .then(print => {
+            const currentSettings = print.printSettings;
+            for (const setting in newSettings) {
+                currentSettings[setting] = newSettings[setting];
+            }
+            print.markModified('printSettings');
+            print.save();
+            res.status(200).send('design updated');
+        })
+        .catch(e => {
+            res.status(400).send('file failed to update');
+        });
+});
+
+router.delete('', (req, res) => {
+
+});
+
 
 module.exports = router;

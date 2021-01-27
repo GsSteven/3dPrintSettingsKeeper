@@ -17,10 +17,10 @@ router.post('', (req, res) => {
 
 router.delete('', (req, res) => {
     try {
-        const imageName = req.query.img;
+        const fileName = req.query.fileName;
         const params = {
             Bucket: 'printsettings',
-            Key: imageName
+            Key: fileName
         };
         uploadTool.deletePic(params);
         res.status(200).send();

@@ -30,7 +30,9 @@ class SavedDesigns extends React.Component {
             return (
                 <Print
                     printSettings={print.printSettings}
-                    key={print.printSettings.title + print.printSettings.printTime}
+                    id={print._id}
+                    refresh={this.getPrints}
+                    key={print._id}
                 />
             );
         });

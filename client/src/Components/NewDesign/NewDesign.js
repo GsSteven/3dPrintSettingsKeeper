@@ -37,6 +37,8 @@ class NewDesign extends React.Component {
                 break;
             case "none": this.setState({ buildPlateAdhesionType: "none" });
                 break;
+            case "": this.setState({ buildPlateAdhesionType: "" });
+                break;
             default: console.log('error at adhesionType switch');
         }
     }
@@ -76,6 +78,10 @@ class NewDesign extends React.Component {
                 )
             case "none":
                 break;
+            case "":
+                return (
+                    <div className="subclass"></div>
+                );
             default: console.log('error at getAdhesionType switch');
         }
     }
