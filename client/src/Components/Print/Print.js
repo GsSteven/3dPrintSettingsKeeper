@@ -50,6 +50,8 @@ class Print extends React.Component {
                 {this.state.expanded &&
                     <ExpandedPrint
                         printSettings={this.props.printSettings}
+                        id={this.props.id}
+                        refresh={this.props.refresh}
                         close={this.closePrint}
                     />
                 }
