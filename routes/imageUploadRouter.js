@@ -6,7 +6,6 @@ const singleUpload = uploadTool.upload.single('image');
 router.post('', (req, res) => {
     try {
         singleUpload(req, res, (err) => {
-            console.log(req.file);
             res.json({ 'imageUrl': req.file.location });
         });
     } catch (err) {

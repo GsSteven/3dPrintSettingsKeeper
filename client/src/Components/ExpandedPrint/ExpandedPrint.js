@@ -13,6 +13,8 @@ class ExpandedPrint extends React.Component {
             buttonDisplay: 'save'
         }
 
+        this.verifyDelete = this.verifyDelete.bind(this);
+        this.deleteDesign = this.deleteDesign.bind(this);
         this.setAdhesionType = this.setAdhesionType.bind(this);
         this.getAdhesionType = this.getAdhesionType.bind(this);
         this.handleToggle = this.handleToggle.bind(this);
@@ -20,8 +22,35 @@ class ExpandedPrint extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    async removeFileFromHost() {
-        const fileName = this.props.printSettings.img.split('.com/')[1];
+    verifyDelete() {
+        this.state.verifyDelete ? this.setState({ verifyDelete: false }) : this.setState({ verifyDelete: true });
+    }
+
+    async deleteDesign() {
+        const currentPrintSettings = this.props.printSettings;
+        //if img remove img from host
+        if (currentPrintSettings.img) {
+            this.removeFileFromHost(currentPrintSettings.img);
+        }
+        //if uploaded file remove from host
+        if (currentPrintSettings.file) {
+            this.removeFileFromHost(currentPrintSettings.file);
+        }
+
+        await axios({
+            method: 'delete',
+            url: '/api/prints',
+            params: { id: this.props.id }
+        })
+            .then(response => {
+                if (response.status === 200) {
+                    this.props.refresh();
+                }
+            });
+    }
+
+    async removeFileFromHost(file) {
+        const fileName = file.split('.com/')[1];
         console.log(fileName);
         await axios({
             method: 'delete',
@@ -71,7 +100,10 @@ class ExpandedPrint extends React.Component {
                         </div>
                         <div className="subclass">
                             <label htmlFor="brimOnlyOnOutside">Brim Only on Outside</label>
-                            <input type="checkbox" name="brimOnlyOnOutside" id="brimOnlyOnOutside" value="brimOnlyOnOutside" className="subClassInput" />
+                            <select type="" name="brimOnlyOnOutside" id="brimOnlyOnOutside" className="subClassInput" onChange={this.handleChange} >
+                                <option value=""></option>
+                                <option value="on">On</option>
+                            </select>
                         </div>
                     </div>
                 )
@@ -91,11 +123,11 @@ class ExpandedPrint extends React.Component {
     buttonDisplay() {
         switch (this.state.buttonDisplay) {
             case 'save':
-                return 'update';
+                return 'Update';
             case 'loading':
                 return <img src={loading} alt="loading" className="loading" />;
             case 'saved':
-                return 'updated';
+                return 'Updated';
             case 'error':
                 return 'error';
             default:
@@ -147,7 +179,7 @@ class ExpandedPrint extends React.Component {
 
         //filter out unneeded states for payLoad
         for (const key in this.state) {
-            if (key.indexOf("Toggle") === -1 && key !== "tempImg" && key !== "buttonDisplay" && key !== "previousImg") {
+            if (key.indexOf("Toggle") === -1 && key !== "tempImg" && key !== "buttonDisplay" && key !== "previousImg" && key !== "verifyDelete") {
                 payLoad[key] = this.state[key];
             }
         }
@@ -173,6 +205,7 @@ class ExpandedPrint extends React.Component {
                     console.error(e);
                 });
         }
+        //send request to update design
         await axios({
             method: 'put',
             url: '/api/prints',
@@ -207,9 +240,6 @@ class ExpandedPrint extends React.Component {
                             option.setAttribute('selected', 'selected');
                         }
                     })
-                }
-                if (this.props.printSettings[key] === 'on') {
-
                 }
                 input.defaultValue = this.props.printSettings[key];
             }
@@ -343,7 +373,10 @@ class ExpandedPrint extends React.Component {
                             </div>
                             <div className="subclass">
                                 <label htmlFor="enableIroning">Enable Ironing</label>
-                                <input type="checkbox" name="enableIroning" id="enableIroning" className="subClassInput" onChange={this.handleChange} />
+                                <select type="" name="enableIroning" id="enableIroning" className="subClassInput" onChange={this.handleChange} >
+                                    <option value=""></option>
+                                    <option value="on">On</option>
+                                </select>
                             </div>
                         </div>
 
@@ -478,11 +511,17 @@ class ExpandedPrint extends React.Component {
                             </div>
                             <div className="subclass">
                                 <label htmlFor="enableAccelerationControl">Enable Acceleration Control</label>
-                                <input type="checkbox" name="enableAccelerationControl" value="enableAccelerationControl" id="enableAccelerationControl" className="subClassInput" onChange={this.handleChange} />
+                                <select type="" name="enableAccelerationControl" id="enableAccelerationControl" className="subClassInput" onChange={this.handleChange} >
+                                    <option value=""></option>
+                                    <option value="on">On</option>
+                                </select>
                             </div>
                             <div className="subclass">
                                 <label htmlFor="enableJerkControl">Enable Jerk Control</label>
-                                <input type="checkbox" name="enableJerkControl" value="enableJerkControl" id="enableJerkControl" className="subClassInput" onChange={this.handleChange} />
+                                <select type="" name="enableJerkControl" id="enableJerkControl" className="subClassInput" onChange={this.handleChange} >
+                                    <option value=""></option>
+                                    <option value="on">On</option>
+                                </select>
                             </div>
                         </div>
 
@@ -494,11 +533,17 @@ class ExpandedPrint extends React.Component {
                         <div className="settingsSubclass" id="travelSettings">
                             <div className="subclass">
                                 <label htmlFor="enableRetraction">Enable Retraction</label>
-                                <input type="checkbox" name="enableRetraction" value="enableRetraction" id="enableRetraction" className="subClassInput" onChange={this.handleChange} />
+                                <select type="" name="enableRetraction" id="enableRetraction" className="subClassInput" onChange={this.handleChange} >
+                                    <option value=""></option>
+                                    <option value="on">On</option>
+                                </select>
                             </div>
                             <div className="subclass">
                                 <label htmlFor="retractAtLayerChange">Retract At Layer Change</label>
-                                <input type="checkbox" name="retractAtLayerChange" value="retractAtLayerChange" id="retractAtLayerChange" className="subClassInput" onChange={this.handleChange} />
+                                <select type="" name="retractAtLayerChange" id="retractAtLayerChange" className="subClassInput" onChange={this.handleChange} >
+                                    <option value=""></option>
+                                    <option value="on">On</option>
+                                </select>
                             </div>
                             <div className="subclass">
                                 <label htmlFor="retractionDistance">Retraction Distance</label>
@@ -520,11 +565,17 @@ class ExpandedPrint extends React.Component {
                             </div>
                             <div className="subclass">
                                 <label htmlFor="avoidPrintedPartsWhenTraveling">Avoid Printed Parts When Traveling</label>
-                                <input type="checkbox" name="avoidPrintedPartsWhenTraveling" value="avoidPrintedPartsWhenTraveling" id="avoidPrintedPartsWhenTraveling" className="subClassInput" onChange={this.handleChange} />
+                                <select type="" name="avoidPrintedPartsWhenTraveling" id="avoidPrintedPartsWhenTraveling" className="subClassInput" onChange={this.handleChange} >
+                                    <option value=""></option>
+                                    <option value="on">On</option>
+                                </select>
                             </div>
                             <div className="subclass">
                                 <label htmlFor="avoidSupportsWhenTraveling">Avoid Supports When Traveling</label>
-                                <input type="checkbox" name="avoidSupportsWhenTraveling" value="avoidSupportsWhenTraveling" id="avoidSupportsWhenTraveling" className="subClassInput" onChange={this.handleChange} />
+                                <select type="" name="avoidSupportsWhenTraveling" id="avoidSupportsWhenTraveling" className="subClassInput" onChange={this.handleChange} >
+                                    <option value=""></option>
+                                    <option value="on">On</option>
+                                </select>
                             </div>
                             <div className="subclass">
                                 <label htmlFor="travelAvoidDistance">Travel Avoid Distance</label>
@@ -532,7 +583,10 @@ class ExpandedPrint extends React.Component {
                             </div>
                             <div className="subclass">
                                 <label htmlFor="zHopWhenRetracted">Z Hop When Retracted</label>
-                                <input type="checkbox" name="zHopWhenRetracted" value="zHopWhenRetracted" id="zHopWhenRetracted" className="subClassInput" onChange={this.handleChange} />
+                                <select type="" name="zHopWhenRetracted" id="zHopWhenRetracted" className="subClassInput" onChange={this.handleChange} >
+                                    <option value=""></option>
+                                    <option value="on">On</option>
+                                </select>
                             </div>
                         </div>
 
@@ -544,7 +598,10 @@ class ExpandedPrint extends React.Component {
                         <div className="settingsSubclass" id="coolingSettings">
                             <div className="subclass">
                                 <label htmlFor="enablePrintCooling">Enable Print Cooling</label>
-                                <input type="checkbox" name="enablePrintCooling" value="enablePrintCooling" id="enablePrintCooling" className="subClassInput" onChange={this.handleChange} />
+                                <select type="" name="enablePrintCooling" id="enablePrintCooling" className="subClassInput" onChange={this.handleChange} >
+                                    <option value=""></option>
+                                    <option value="on">On</option>
+                                </select>
                             </div>
                             <div className="subclass">
                                 <label htmlFor="fanSpeed">Fan Speed</label>
@@ -584,7 +641,10 @@ class ExpandedPrint extends React.Component {
                             </div>
                             <div className="subclass">
                                 <label htmlFor="liftHead">Lift Head</label>
-                                <input type="checkbox" name="liftHead" value="liftHead" id="liftHead" className="subClassInput" onChange={this.handleChange} />
+                                <select type="" name="liftHead" id="liftHead" className="subClassInput" onChange={this.handleChange} >
+                                    <option value=""></option>
+                                    <option value="on">On</option>
+                                </select>
                             </div>
                         </div>
 
@@ -596,7 +656,10 @@ class ExpandedPrint extends React.Component {
                         <div className="settingsSubclass" id="supportSettings">
                             <div className="subclass">
                                 <label htmlFor="generateSupport">Generate Support</label>
-                                <input type="checkbox" name="generateSupport" value="generateSupport" id="generateSupport" className="subClassInput" onChange={this.handleChange} />
+                                <select type="" name="generateSupport" id="generateSupport" className="subClassInput" onChange={this.handleChange} >
+                                    <option value=""></option>
+                                    <option value="on">On</option>
+                                </select>
                             </div>
                             <div className="subclass">
                                 <label htmlFor="supportPlacement">Support Placement</label>
@@ -641,15 +704,24 @@ class ExpandedPrint extends React.Component {
                             </div>
                             <div className="subclass">
                                 <label htmlFor="enableSupportInterface">Enable Support Interface</label>
-                                <input type="checkbox" name="enableSupportInterface" value="enableSupportInterface" id="enableSupportInterface" className="subClassInput" onChange={this.handleChange} />
+                                <select type="" name="enableSupportInterface" id="enableSupportInterface" className="subClassInput" onChange={this.handleChange} >
+                                    <option value=""></option>
+                                    <option value="on">On</option>
+                                </select>
                             </div>
                             <div className="subclass">
                                 <label htmlFor="enableSupportRoof">Enable Support Roof</label>
-                                <input type="checkbox" name="enableSupportRoof" value="enableSupportRoof" id="enableSupportRoof" className="subClassInput" onChange={this.handleChange} />
+                                <select type="" name="enableSupportRoof" id="enableSupportRoof" className="subClassInput" onChange={this.handleChange} >
+                                    <option value=""></option>
+                                    <option value="on">On</option>
+                                </select>
                             </div>
                             <div className="subclass">
                                 <label htmlFor="enableSupportFloor">Enable Support Floor</label>
-                                <input type="checkbox" name="enableSupportFloor" value="enableSupportFloor" id="enableSupportFloor" className="subClassInput" onChange={this.handleChange} />
+                                <select type="" name="enableSupportFloor" id="enableSupportFloor" className="subClassInput" onChange={this.handleChange} >
+                                    <option value=""></option>
+                                    <option value="on">On</option>
+                                </select>
                             </div>
                         </div>
 
@@ -697,7 +769,10 @@ class ExpandedPrint extends React.Component {
                             </div>
                             <div className="subclass">
                                 <label htmlFor="spiralizeOuterContour">Spiralize Outer Contour</label>
-                                <input type="checkbox" name="spiralizeOuterContour" value="spiralizeOuterContour" id="spiralizeOuterContour" className="subClassInput" onChange={this.handleChange} />
+                                <select type="" name="spiralizeOuterContour" id="spiralizeOuterContour" className="subClassInput" onChange={this.handleChange} >
+                                    <option value=""></option>
+                                    <option value="on">On</option>
+                                </select>
                             </div>
                         </div>
 
@@ -709,15 +784,24 @@ class ExpandedPrint extends React.Component {
                         <div className="settingsSubclass" id="experimentalSettings">
                             <div className="subclass">
                                 <label htmlFor="makeOverhangPrintable">Make Overhang Printable</label>
-                                <input type="checkbox" name="makeOverhangPrintable" value="makeOverhangPrintable" id="makeOverhangPrintable" className="subClassInput" onChange={this.handleChange} />
+                                <select type="" name="makeOverhangPrintable" id="makeOverhangPrintable" className="subClassInput" onChange={this.handleChange} >
+                                    <option value=""></option>
+                                    <option value="on">On</option>
+                                </select>
                             </div>
                             <div className="subclass">
                                 <label htmlFor="enableConicalSupport">Enable Conical Support</label>
-                                <input type="checkbox" name="enableConicalSupport" value="enableConicalSupport" id="enableConicalSupport" className="subClassInput" onChange={this.handleChange} />
+                                <select type="" name="enableConicalSupport" id="enableConicalSupport" className="subClassInput" onChange={this.handleChange} >
+                                    <option value=""></option>
+                                    <option value="on">On</option>
+                                </select>
                             </div>
                             <div className="subclass">
                                 <label htmlFor="useAdaptiveLayers">Use Adaptive Layers</label>
-                                <input type="checkbox" name="useAdaptiveLayers" value="useAdaptiveLayers" id="useAdaptiveLayers" className="subClassInput" onChange={this.handleChange} />
+                                <select type="" name="useAdaptiveLayers" id="useAdaptiveLayers" className="subClassInput" onChange={this.handleChange} >
+                                    <option value=""></option>
+                                    <option value="on">On</option>
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -736,11 +820,45 @@ class ExpandedPrint extends React.Component {
                         required
                         onChange={this.handleChange}
                     />
-                    <button id="updateButton"
-                        type='submit'>
-                        {this.buttonDisplay()}
+                    <div className="buttons">
+                        <button
+                            className="updateButton"
+                            type='submit'
+                        >
+                            {this.buttonDisplay()}
+                        </button>
+                        <button
+                            className="deleteButton"
+                            type="button"
+                            onClick={this.verifyDelete}
+                        >
+                            Delete
                     </button>
+                    </div>
+                    {this.state.verifyDelete &&
+                        <div className="verifyDelete">
+                            <h2 className="mainLabel" id="verifyMessage">Are you sure you want to delete this file?</h2>
+                            <div className="verifyButtons">
+                                <button
+                                    id="yesDelete"
+                                    className="deleteButton"
+                                    type="button"
+                                    onClick={this.deleteDesign}
+                                >Yes</button>
+                                <button
+                                    id="noDelete"
+                                    className="updateButton"
+                                    type="button"
+                                    onClick={this.verifyDelete}
+                                >No</button>
+                            </div>
+                        </div>
+                    }
                 </form>
+                <div className="closeButton" onClick={this.props.close}>
+                    <div className="close1"></div>
+                    <div className="close2"></div>
+                </div>
             </div>
         );
     }

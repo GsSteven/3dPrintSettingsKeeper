@@ -65,7 +65,7 @@ class NewDesign extends React.Component {
                         </div>
                         <div className="subclass">
                             <label htmlFor="brimOnlyOnOutside">Brim Only on Outside</label>
-                            <input type="checkbox" name="brimOnlyOnOutside" id="brimOnlyOnOutside" value="brimOnlyOnOutside" className="subClassInput" />
+                            <input type="checkbox" name="brimOnlyOnOutside" id="brimOnlyOnOutside" value="on" className="subClassInput" />
                         </div>
                     </div>
                 )
@@ -119,22 +119,42 @@ class NewDesign extends React.Component {
         }
     }
 
-    handleChange(e) {
+    checkFileName(name) {
+        if (name.indexOf(' ') !== -1) {
+            return true
+        } else {
+            return false
+        }
+    }
+
+    async handleChange(e) {
         const setting = e.target.name;
         const value = e.target.value;
+        const errorElement1 = document.querySelector(".errorMessage1");
+        const errorElement2 = document.querySelector(".errorMessage2");
         //if image get the files not value
         if (setting === "img") {
-            //set temp img in case file is chosen but not submitted to prevent unneeded upload
-            console.log(e.target.files[0]);
-            this.setState({
-                tempImg: URL.createObjectURL(e.target.files[0]),
-                img: e.target.files[0]
-            })
+            if (this.checkFileName(e.target.files[0].name)) {
+                errorElement1.innerHTML = "File names must not include space(s)";
+                return;
+            } else {
+                //set temp img in case file is chosen but not submitted to prevent unneeded upload
+                this.setState({
+                    tempImg: URL.createObjectURL(e.target.files[0]),
+                    img: e.target.files[0]
+                })
+                errorElement1.innerHTML = '';
+            }
         } else if (setting === 'printFile') {
-            console.log(e.target.files[0]);
-            this.setState({
-                file: e.target.files[0]
-            })
+            if (this.checkFileName(e.target.files[0].name)) {
+                errorElement2.innerHTML = "File names must not include space(s)";
+                return;
+            } else {
+                this.setState({
+                    file: e.target.files[0]
+                })
+                errorElement2.innerHTML = '';
+            }
         } else {
             this.setState({ [setting]: value });
         }
@@ -224,7 +244,7 @@ class NewDesign extends React.Component {
                             accept=".jpg, .jpeg, .png, .gif"
                             onChange={this.handleChange}
                         />
-
+                        <p className="errorMessage1"></p>
                         <label htmlFor="printFile" className="mainLabel">
                             Add file
                             <div className="uploadButton">
@@ -239,6 +259,7 @@ class NewDesign extends React.Component {
                             accept=".stl, .vrml"
                             onChange={this.handleChange}
                         />
+                        <p className="errorMessage2"></p>
                     </div>
                     <div className="settings">
 
@@ -333,7 +354,7 @@ class NewDesign extends React.Component {
                             </div>
                             <div className="subclass">
                                 <label htmlFor="enableIroning">Enable Ironing</label>
-                                <input type="checkbox" name="enableIroning" id="enableIroning" className="subClassInput" onChange={this.handleChange} />
+                                <input type="checkbox" name="enableIroning" id="enableIroning" className="subClassInput" value="on" onChange={this.handleChange} />
                             </div>
                         </div>
 
@@ -468,11 +489,11 @@ class NewDesign extends React.Component {
                             </div>
                             <div className="subclass">
                                 <label htmlFor="enableAccelerationControl">Enable Acceleration Control</label>
-                                <input type="checkbox" name="enableAccelerationControl" value="enableAccelerationControl" id="enableAccelerationControl" className="subClassInput" onChange={this.handleChange} />
+                                <input type="checkbox" name="enableAccelerationControl" value="on" id="enableAccelerationControl" className="subClassInput" onChange={this.handleChange} />
                             </div>
                             <div className="subclass">
                                 <label htmlFor="enableJerkControl">Enable Jerk Control</label>
-                                <input type="checkbox" name="enableJerkControl" value="enableJerkControl" id="enableJerkControl" className="subClassInput" onChange={this.handleChange} />
+                                <input type="checkbox" name="enableJerkControl" value="on" id="enableJerkControl" className="subClassInput" onChange={this.handleChange} />
                             </div>
                         </div>
 
@@ -484,11 +505,11 @@ class NewDesign extends React.Component {
                         <div className="settingsSubclass" id="travelSettings">
                             <div className="subclass">
                                 <label htmlFor="enableRetraction">Enable Retraction</label>
-                                <input type="checkbox" name="enableRetraction" value="enableRetraction" id="enableRetraction" className="subClassInput" onChange={this.handleChange} />
+                                <input type="checkbox" name="enableRetraction" value="on" id="enableRetraction" className="subClassInput" onChange={this.handleChange} />
                             </div>
                             <div className="subclass">
                                 <label htmlFor="retractAtLayerChange">Retract At Layer Change</label>
-                                <input type="checkbox" name="retractAtLayerChange" value="retractAtLayerChange" id="retractAtLayerChange" className="subClassInput" onChange={this.handleChange} />
+                                <input type="checkbox" name="retractAtLayerChange" value="on" id="retractAtLayerChange" className="subClassInput" onChange={this.handleChange} />
                             </div>
                             <div className="subclass">
                                 <label htmlFor="retractionDistance">Retraction Distance</label>
@@ -510,11 +531,11 @@ class NewDesign extends React.Component {
                             </div>
                             <div className="subclass">
                                 <label htmlFor="avoidPrintedPartsWhenTraveling">Avoid Printed Parts When Traveling</label>
-                                <input type="checkbox" name="avoidPrintedPartsWhenTraveling" value="avoidPrintedPartsWhenTraveling" id="avoidPrintedPartsWhenTraveling" className="subClassInput" onChange={this.handleChange} />
+                                <input type="checkbox" name="avoidPrintedPartsWhenTraveling" value="on" id="avoidPrintedPartsWhenTraveling" className="subClassInput" onChange={this.handleChange} />
                             </div>
                             <div className="subclass">
                                 <label htmlFor="avoidSupportsWhenTraveling">Avoid Supports When Traveling</label>
-                                <input type="checkbox" name="avoidSupportsWhenTraveling" value="avoidSupportsWhenTraveling" id="avoidSupportsWhenTraveling" className="subClassInput" onChange={this.handleChange} />
+                                <input type="checkbox" name="avoidSupportsWhenTraveling" value="on" id="avoidSupportsWhenTraveling" className="subClassInput" onChange={this.handleChange} />
                             </div>
                             <div className="subclass">
                                 <label htmlFor="travelAvoidDistance">Travel Avoid Distance</label>
@@ -522,7 +543,7 @@ class NewDesign extends React.Component {
                             </div>
                             <div className="subclass">
                                 <label htmlFor="zHopWhenRetracted">Z Hop When Retracted</label>
-                                <input type="checkbox" name="zHopWhenRetracted" value="zHopWhenRetracted" id="zHopWhenRetracted" className="subClassInput" onChange={this.handleChange} />
+                                <input type="checkbox" name="zHopWhenRetracted" value="on" id="zHopWhenRetracted" className="subClassInput" onChange={this.handleChange} />
                             </div>
                         </div>
 
@@ -534,7 +555,7 @@ class NewDesign extends React.Component {
                         <div className="settingsSubclass" id="coolingSettings">
                             <div className="subclass">
                                 <label htmlFor="enablePrintCooling">Enable Print Cooling</label>
-                                <input type="checkbox" name="enablePrintCooling" value="enablePrintCooling" id="enablePrintCooling" className="subClassInput" onChange={this.handleChange} />
+                                <input type="checkbox" name="enablePrintCooling" value="on" id="enablePrintCooling" className="subClassInput" onChange={this.handleChange} />
                             </div>
                             <div className="subclass">
                                 <label htmlFor="fanSpeed">Fan Speed</label>
@@ -574,7 +595,7 @@ class NewDesign extends React.Component {
                             </div>
                             <div className="subclass">
                                 <label htmlFor="liftHead">Lift Head</label>
-                                <input type="checkbox" name="liftHead" value="liftHead" id="liftHead" className="subClassInput" onChange={this.handleChange} />
+                                <input type="checkbox" name="liftHead" value="on" id="liftHead" className="subClassInput" onChange={this.handleChange} />
                             </div>
                         </div>
 
@@ -586,7 +607,7 @@ class NewDesign extends React.Component {
                         <div className="settingsSubclass" id="supportSettings">
                             <div className="subclass">
                                 <label htmlFor="generateSupport">Generate Support</label>
-                                <input type="checkbox" name="generateSupport" value="generateSupport" id="generateSupport" className="subClassInput" onChange={this.handleChange} />
+                                <input type="checkbox" name="generateSupport" value="on" id="generateSupport" className="subClassInput" onChange={this.handleChange} />
                             </div>
                             <div className="subclass">
                                 <label htmlFor="supportPlacement">Support Placement</label>
@@ -631,15 +652,15 @@ class NewDesign extends React.Component {
                             </div>
                             <div className="subclass">
                                 <label htmlFor="enableSupportInterface">Enable Support Interface</label>
-                                <input type="checkbox" name="enableSupportInterface" value="enableSupportInterface" id="enableSupportInterface" className="subClassInput" onChange={this.handleChange} />
+                                <input type="checkbox" name="enableSupportInterface" value="on" id="enableSupportInterface" className="subClassInput" onChange={this.handleChange} />
                             </div>
                             <div className="subclass">
                                 <label htmlFor="enableSupportRoof">Enable Support Roof</label>
-                                <input type="checkbox" name="enableSupportRoof" value="enableSupportRoof" id="enableSupportRoof" className="subClassInput" onChange={this.handleChange} />
+                                <input type="checkbox" name="enableSupportRoof" value="on" id="enableSupportRoof" className="subClassInput" onChange={this.handleChange} />
                             </div>
                             <div className="subclass">
                                 <label htmlFor="enableSupportFloor">Enable Support Floor</label>
-                                <input type="checkbox" name="enableSupportFloor" value="enableSupportFloor" id="enableSupportFloor" className="subClassInput" onChange={this.handleChange} />
+                                <input type="checkbox" name="enableSupportFloor" value="on" id="enableSupportFloor" className="subClassInput" onChange={this.handleChange} />
                             </div>
                         </div>
 

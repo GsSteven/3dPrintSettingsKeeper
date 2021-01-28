@@ -3,6 +3,7 @@
     margin: 0 auto;
     background-image: url('./../../images/background.jpg');
     background-size: cover;
+    overflow: hidden;
 }
 
 form {
@@ -44,6 +45,13 @@ form {
     width: 200px;
     text-align: center;
     margin: 20px 0;
+}
+
+.errorMessage1,
+.errorMessage2 {
+    background-color: red;
+    color:rgb(245, 245, 245);
+    font-family: "Orbitron", sans-serif;
 }
 
 /* image upload */
@@ -186,16 +194,35 @@ form {
     color: rgb(226, 225, 225);
 }
 
-@media screen and (max-width: 1000px){
+@media screen and (max-width: 1300px){
+
+    .newDesignWrapper {
+        text-align: center;
+    }
+
+    .settingSubject {
+        padding: 0;
+    }
+    
     .settings {
         width: 100%;
     }
 
-    .settingSubject {
-        padding-left: 0;
+    .displaySubclass {
+        transform: translateX(0em);
     }
+}
 
-    .subclass {
-        margin-left: .5em;
+@media screen and (max-width: 950px) {
+
+    form {
+        width: 90%;
+    }
+}
+
+@media screen and (max-width: 500px) {
+
+    form {
+        width: 100%;
     }
 }

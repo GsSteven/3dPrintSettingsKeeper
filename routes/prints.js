@@ -49,6 +49,14 @@ router.put('', (req, res) => {
 });
 
 router.delete('', (req, res) => {
+    Print.deleteOne({ _id: req.query.id })
+        .then(
+            res.status(200).send()
+        )
+        .catch(e => {
+            console.log(e);
+            res.status(400).send();
+        })
 
 });
 

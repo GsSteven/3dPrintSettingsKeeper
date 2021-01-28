@@ -4,13 +4,12 @@
 
 header {
   display: grid;
-  height: 10vh;
+  height: 12vh;
 }
 
-header h1 {
+header .headerLogo {
   margin: auto;
-  font-family: 'Russo One', sans-serif;
-  font-size: 3rem;
+  height: 100%;
 }
 
 
@@ -53,4 +52,16 @@ footer {
   background-color: rgb(42, 32, 136);
   font-family: "Orbitron", sans-serif;
   font-size: 15px;
+}
+
+
+@media screen and (max-width: 500px) {
+  header h1 {
+      font-size: 2em;
+  }
+
+  .navBar li {
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+  }
 }

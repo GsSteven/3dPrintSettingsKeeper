@@ -17,7 +17,6 @@ class SavedDesigns extends React.Component {
         await axios.get('/api/prints')
             .then(response => {
                 this.setState({ prints: response.data });
-                console.log(response);
             })
     }
 
@@ -39,6 +38,7 @@ class SavedDesigns extends React.Component {
 
         return (
             <div className="savedDesignsWrapper">
+                <h1 className="saved"><u>Saved</u></h1>
                 <div className="designs">
                     {prints}
                 </div>

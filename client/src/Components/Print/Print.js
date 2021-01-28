@@ -40,7 +40,7 @@ class Print extends React.Component {
         const settings = this.props.printSettings;
 
         return (
-            <div className="printWrapper" >
+            <div className="printWrapper">
                 <h1 className="printTitle">{this.limitText(settings.title)}</h1>
                 <div className="print">
                     <img className="printThumb" src={this.setImg()} alt="print design" onClick={this.expandPrint} />

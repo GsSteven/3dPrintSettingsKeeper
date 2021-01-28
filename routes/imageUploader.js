@@ -36,7 +36,7 @@ const deletePic = params => {
         if (err) {
             console.log(err, err.stack);
         } else {
-            console.log('file removed from s3');
+            console.log('file removed from host');
         }
     });
 }

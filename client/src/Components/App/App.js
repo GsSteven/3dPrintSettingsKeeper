@@ -2,6 +2,7 @@ import React from 'react';
 import SavedDesigns from '../SavedDesigns/SavedDesigns';
 import NewDesign from '../NewDesign/NewDesign';
 import './App.css';
+import logo from './../../images/3dLogo.png';
 
 class App extends React.Component {
   constructor(props) {
@@ -35,7 +36,7 @@ class App extends React.Component {
     return (
       <div className='appWrapper'>
         <header>
-          <h1>3d designs keeper</h1>
+          <img className="headerLogo" src={logo} alt="3d keeper" />
         </header>
         <ul className="navBar">
           <li id="SavedDesigns" onClick={this.changeDisplay}>Saved designs</li>

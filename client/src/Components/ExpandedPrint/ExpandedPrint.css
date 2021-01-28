@@ -1,11 +1,16 @@
 .expandedPrintWrapper {
     background-color: rgb(245, 245, 245);
+    border: 2px solid black;
     width: 75%;
-    min-height: 50%;
+    height: 90%;
     position: absolute;
     padding: 2em 0;
-    top: 20em;
+    top: auto;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
     cursor: default;
+    overflow: scroll;
 }
 
 .closeButton {
@@ -64,7 +69,21 @@ form {
     font-size: 1.3em;
 }
 
-#updateButton {
+.buttons,
+.verifyButtons {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    width: 50%;
+}
+
+.verifyButtons {
+    margin: 0 auto;
+    width: 60%;
+}
+
+.updateButton,
+.deleteButton {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -77,7 +96,39 @@ form {
     transition: .2s linear;
 }
 
-#updateButton:hover {
+.updateButton:hover {
     background-color: rgb(5, 105, 9);
     color: rgb(226, 225, 225);
+}
+
+.deleteButton:hover {
+    background-color: rgb(134, 23, 23);
+    color: rgb(226, 225, 225);
+}
+
+#verifyMessage {
+    margin-top: .8em;
+}
+
+#yesDelete,
+#noDelete {
+    margin: 0;
+}
+
+#yesDelete:hover {
+    background-image: url('./../../images/fire.gif');
+    background-size: cover;
+}
+
+#noDelete:hover {
+    background-image: url('./../../images/sweat.gif');
+    background-size: cover;
+}
+
+
+
+@media screen and (max-width: 500px) {
+    .expandedPrintWrapper {
+        width: 100%;
+    }
 }
