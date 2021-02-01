@@ -26,7 +26,11 @@ const upload = multer({
             });
         },
         key: (req, file, cb) => {
-            cb(null, Date.now().toString() + file.originalname);
+            if (file.mimetype === 'application/zip') {
+                cb(null, req.query[0] + Date.now().toString() + '.zip');
+            } else {
+                cb(null, req.query[0] + Date.now().toString());
+            }
         }
     })
 });

@@ -89,8 +89,24 @@ form {
     padding-right: 10px;
 }
 
-.listFile {
-    font-size: .5em;
+li.listFile {
+    height: 20px;
+    width: 250px;
+    font-family: "Orbitron", sans-serif;
+    font-size: 10px;
+    color:rgb(245, 245, 245);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    list-style: none;
+    border: 1px solid red;
+    margin: 5px 0;
+}
+
+.listFile img {
+    width: 1.5em;
+    height: 1.5em;
+    cursor: pointer;
 }
 
 #printFile {
@@ -137,13 +153,13 @@ form {
     opacity: 0;
     height: 0;
     pointer-events: none;
-    transform: translateX(12em);
+    transform: translateX(8em);
     margin-bottom: 1em;
 }
 
 .displaySubclass {
     opacity: 1;
-    transform: translateX(8em);
+    transform: translateX(6em);
     transition: .5s ease-in;
 }
 
@@ -194,7 +210,7 @@ form {
     color: rgb(226, 225, 225);
 }
 
-@media screen and (max-width: 1300px){
+@media screen and (max-width: 1700px){
 
     .newDesignWrapper {
         text-align: center;

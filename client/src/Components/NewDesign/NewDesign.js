@@ -1,8 +1,10 @@
 import React from 'react';
 import axios from 'axios';
+import JSZip from 'jszip';
 import './NewDesign.css';
 import defaultImg from './../../images/defaultImage.png';
 import uploadIcon from './../../images/uploadIcon.png';
+import removeFileIcon from './../../images/removeFile.png';
 import arrow from './../../images/arrow.png';
 import loading from '../../images/loading.gif';
 
@@ -20,6 +22,7 @@ class NewDesign extends React.Component {
         this.handleToggle = this.handleToggle.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.zipFiles = this.zipFiles.bind(this);
     }
 
     setAdhesionType(e) {
@@ -127,6 +130,18 @@ class NewDesign extends React.Component {
         }
     }
 
+    getFiles() {
+        const files = this.state.file.map(file => {
+            return <li className="listFile" key={file.name}>{file.name}<img src={removeFileIcon} filename={file.name} alt='remove file' onClick={this.removeFile} /></li>
+        });
+        return files;
+    }
+
+    removeFile(e) {
+        const fileToDelete = e.target.filename;
+        console.log(fileToDelete);
+    }
+
     async handleChange(e) {
         const setting = e.target.name;
         const value = e.target.value;
@@ -134,6 +149,7 @@ class NewDesign extends React.Component {
         const errorElement2 = document.querySelector(".errorMessage2");
         //if image get the files not value
         if (setting === "img") {
+            //check for spacing in names
             if (this.checkFileName(e.target.files[0].name)) {
                 errorElement1.innerHTML = "File names must not include space(s)";
                 return;
@@ -150,10 +166,21 @@ class NewDesign extends React.Component {
                 errorElement2.innerHTML = "File names must not include space(s)";
                 return;
             } else {
-                this.setState({
-                    file: e.target.files[0]
-                })
+                this.setState(() => {
+                    let filesArray;
+                    //if state has one file in add next file
+                    if (this.state.file) {
+                        filesArray = this.state.file.concat(e.target.files[0]);
+                        //else start the new array
+                    } else {
+                        filesArray = [e.target.files[0]];
+                    }
+                    return {
+                        file: filesArray
+                    };
+                });
                 errorElement2.innerHTML = '';
+                console.log(this.state.file);
             }
         } else {
             this.setState({ [setting]: value });
@@ -162,6 +189,7 @@ class NewDesign extends React.Component {
 
     async handleSubmit(e) {
         e.preventDefault();
+        const mergeTitle = this.state.title.split(' ').join('_');
         const payLoad = {};
 
         this.setState({ buttonDisplay: 'loading' });
@@ -177,7 +205,7 @@ class NewDesign extends React.Component {
         if (payLoad.img) {
             const imgFormData = new FormData();
             imgFormData.append('image', this.state.img);
-            await axios.post(`/api/upload`, imgFormData, { headers: { 'Content-Type': this.state.img.type } })
+            await axios.post(`/api/upload`, imgFormData, { headers: { 'Content-Type': this.state.img.type }, params: mergeTitle })
                 .then(response => {
                     const imgUrl = response.data.imageUrl;
                     return imgUrl;
@@ -191,9 +219,10 @@ class NewDesign extends React.Component {
                 });
         }
         if (payLoad.file) {
+            const zipAllFiles = this.zipFiles();
             const fileData = new FormData();
-            fileData.append('image', this.state.file);
-            await axios.post(`/api/upload`, fileData, { headers: { 'Content-Type': 'application/sla' } })
+            fileData.append('image', await zipAllFiles);
+            await axios.post(`/api/upload`, fileData, { headers: { 'Content-Type': 'application/zip' }, params: mergeTitle })
                 .then(response => {
                     const fileUrl = response.data.imageUrl;
                     return fileUrl;
@@ -221,8 +250,23 @@ class NewDesign extends React.Component {
             });
     }
 
+    zipFiles() {
+        let zip = new JSZip();
+        let filesFolder = zip.folder('files');
+        this.state.file.forEach(file => {
+            let name = file.name;
+            filesFolder.file(name, file, { base64: true });
+        });
+        const zippedFiles = zip.generateAsync({ type: "blob" })
+            .then(blob => {
+                return blob;
+            });
+        return zippedFiles;
+    }
+
 
     render() {
+
         return (
             <div className="newDesignWrapper">
                 <form onSubmit={this.handleSubmit}>
@@ -234,7 +278,7 @@ class NewDesign extends React.Component {
                     />
                     <div className="uploadWrapper">
                         <label htmlFor="img" className="mainLabel">
-                            Add image
+                            Add Image
                             <div id="printImg">
                                 <img src={this.state.tempImg ? this.state.tempImg : defaultImg} alt=''></img>
                             </div>
@@ -246,14 +290,16 @@ class NewDesign extends React.Component {
                         />
                         <p className="errorMessage1"></p>
                         <label htmlFor="printFile" className="mainLabel">
-                            Add file
+                            Add File(s)
                             <div className="uploadButton">
                                 <img src={uploadIcon} alt="upload" /> Upload
                             </div>
-                            {this.state.file &&
-                                <p className="listFile">{this.state.file.name}</p>
-                            }
                         </label>
+                        {this.state.file &&
+                            <ul>
+                                {this.getFiles()}
+                            </ul>
+                        }
                         <input id="printFile"
                             type="file" name="printFile"
                             accept=".stl, .vrml"

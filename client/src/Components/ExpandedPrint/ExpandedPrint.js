@@ -272,10 +272,8 @@ class ExpandedPrint extends React.Component {
                             onChange={this.handleChange}
                         />
                         {this.props.printSettings.file &&
-                            <a href={this.props.printSettings.file} download>
-                                <div className="downloadButton">
-                                    <img src={downloadIcon} alt="download" /> Download File
-                                </div>
+                            <a className="downloadButton" href={this.props.printSettings.file} download>
+                                <img src={downloadIcon} alt="download" /> Download File
                             </a>
                         }
                     </div>
@@ -844,13 +842,17 @@ class ExpandedPrint extends React.Component {
                                     className="deleteButton"
                                     type="button"
                                     onClick={this.deleteDesign}
-                                >Yes</button>
+                                >
+                                    Yes
+                                </button>
                                 <button
                                     id="noDelete"
                                     className="updateButton"
                                     type="button"
                                     onClick={this.verifyDelete}
-                                >No</button>
+                                >
+                                    No
+                                </button>
                             </div>
                         </div>
                     }

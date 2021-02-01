@@ -39,8 +39,8 @@ class App extends React.Component {
           <img className="headerLogo" src={logo} alt="3d keeper" />
         </header>
         <ul className="navBar">
-          <li id="SavedDesigns" onClick={this.changeDisplay}>Saved designs</li>
-          <li id="NewDesign" onClick={this.changeDisplay}>New design</li>
+          <li id="SavedDesigns" onClick={this.changeDisplay}>Saved Designs</li>
+          <li id="NewDesign" onClick={this.changeDisplay}>New Design</li>
         </ul>
         {this.displayPage()}
         <footer>Created By: Steven Gsell</footer>
