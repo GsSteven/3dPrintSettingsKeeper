@@ -1,5 +1,5 @@
 {
-  "name": "3dprintsettings",
+  "name": "3dprints",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

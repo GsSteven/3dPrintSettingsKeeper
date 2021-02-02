@@ -48,10 +48,12 @@ form {
 }
 
 .errorMessage1,
-.errorMessage2 {
+.errorMessage2,
+.errorMessage3 {
     background-color: red;
     color:rgb(245, 245, 245);
     font-family: "Orbitron", sans-serif;
+    border-radius: 2px;
 }
 
 /* image upload */
@@ -99,7 +101,6 @@ li.listFile {
     justify-content: space-between;
     align-items: center;
     list-style: none;
-    border: 1px solid red;
     margin: 5px 0;
 }
 
@@ -107,6 +108,11 @@ li.listFile {
     width: 1.5em;
     height: 1.5em;
     cursor: pointer;
+}
+
+#fileSize {
+    font-family: "Russo One", sans-serif;
+    color:rgb(245, 245, 245);
 }
 
 #printFile {

@@ -20,6 +20,8 @@ class NewDesign extends React.Component {
         this.setAdhesionType = this.setAdhesionType.bind(this);
         this.getAdhesionType = this.getAdhesionType.bind(this);
         this.handleToggle = this.handleToggle.bind(this);
+        this.checkFileSize = this.checkFileSize.bind(this);
+        this.removeFile = this.removeFile.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.zipFiles = this.zipFiles.bind(this);
@@ -130,16 +132,39 @@ class NewDesign extends React.Component {
         }
     }
 
+    checkFileSize() {
+        if (this.state.file[0]) {
+            const fileSize = this.state.file.map(file => {
+                return file.size
+            });
+
+            const totalSize = fileSize.reduce((a, b) => {
+                return a + b;
+            });
+
+            const fixedSize = totalSize / 1000000;
+
+            return fixedSize.toFixed(2);
+        } else {
+            return 0;
+        }
+    }
+
     getFiles() {
         const files = this.state.file.map(file => {
-            return <li className="listFile" key={file.name}>{file.name}<img src={removeFileIcon} filename={file.name} alt='remove file' onClick={this.removeFile} /></li>
+            return <li className="listFile" key={file.name}>{file.name}<img src={removeFileIcon} id={file.name} alt='remove file' onClick={this.removeFile} /></li>
         });
         return files;
     }
 
     removeFile(e) {
-        const fileToDelete = e.target.filename;
-        console.log(fileToDelete);
+        const fileToDelete = e.target.id;
+        const newArray = this.state.file.filter(file => {
+            return file.name !== fileToDelete
+        });
+        this.setState({
+            file: newArray
+        });
     }
 
     async handleChange(e) {
@@ -147,6 +172,7 @@ class NewDesign extends React.Component {
         const value = e.target.value;
         const errorElement1 = document.querySelector(".errorMessage1");
         const errorElement2 = document.querySelector(".errorMessage2");
+
         //if image get the files not value
         if (setting === "img") {
             //check for spacing in names
@@ -179,8 +205,11 @@ class NewDesign extends React.Component {
                         file: filesArray
                     };
                 });
-                errorElement2.innerHTML = '';
-                console.log(this.state.file);
+                if (this.checkFileSize > 10) {
+                    errorElement2.innerHTML = 'File size is over the 10mb limit';
+                } else {
+                    errorElement2.innerHTML = '';
+                }
             }
         } else {
             this.setState({ [setting]: value });
@@ -190,64 +219,72 @@ class NewDesign extends React.Component {
     async handleSubmit(e) {
         e.preventDefault();
         const mergeTitle = this.state.title.split(' ').join('_');
+        const errorMessage3 = document.querySelector('.errorMessage3');
         const payLoad = {};
 
-        this.setState({ buttonDisplay: 'loading' });
+        //if file size over limit display error
+        if (this.checkFileSize() > 10) {
+            errorMessage3.innerHTML = 'File size is over the 10mb limit';
+        } else {
+            errorMessage3.innerHTML = '';
 
-        //filter out toggle states and tempImg for payLoad
-        for (const key in this.state) {
-            if (key.indexOf("Toggle") === -1 && key !== "tempImg" && key !== "buttonDisplay") {
-                payLoad[key] = this.state[key];
-            }
-        }
+            this.setState({ buttonDisplay: 'loading' });
 
-        //if custom image is added, create form data to upload to image hosting
-        if (payLoad.img) {
-            const imgFormData = new FormData();
-            imgFormData.append('image', this.state.img);
-            await axios.post(`/api/upload`, imgFormData, { headers: { 'Content-Type': this.state.img.type }, params: mergeTitle })
-                .then(response => {
-                    const imgUrl = response.data.imageUrl;
-                    return imgUrl;
-                })
-                //set payload img as url link returned after image upload
-                .then(response => {
-                    payLoad.img = response;
-                })
-                .catch(e => {
-                    console.error(e);
-                });
-        }
-        if (payLoad.file) {
-            const zipAllFiles = this.zipFiles();
-            const fileData = new FormData();
-            fileData.append('image', await zipAllFiles);
-            await axios.post(`/api/upload`, fileData, { headers: { 'Content-Type': 'application/zip' }, params: mergeTitle })
-                .then(response => {
-                    const fileUrl = response.data.imageUrl;
-                    return fileUrl;
-                })
-                //set payload file as url link returned after file upload
-                .then(response => {
-                    payLoad.file = response;
-                })
-                .catch(e => {
-                    console.error(e);
-                });
-        }
-
-        await axios.post('/api/prints', payLoad)
-            .then(response => {
-                if (response.status === 200) {
-                    this.setState({ buttonDisplay: 'saved' });
-                } else {
-                    this.setState({ buttonDisplay: 'error' })
+            //filter out toggle states and tempImg for payLoad
+            for (const key in this.state) {
+                if (key.indexOf("Toggle") === -1 && key !== "tempImg" && key !== "buttonDisplay") {
+                    payLoad[key] = this.state[key];
                 }
-            })
-            .catch(e => {
-                console.error(e);
-                this.setState({ buttonDisplay: 'error' });
-            });
+            }
+
+            //if custom image is added, create form data to upload to image hosting
+            if (payLoad.img) {
+                const imgFormData = new FormData();
+                imgFormData.append('image', this.state.img);
+                await axios.post(`/api/upload`, imgFormData, { headers: { 'Content-Type': this.state.img.type }, params: mergeTitle })
+                    .then(response => {
+                        const imgUrl = response.data.imageUrl;
+                        return imgUrl;
+                    })
+                    //set payload img as url link returned after image upload
+                    .then(response => {
+                        payLoad.img = response;
+                    })
+                    .catch(e => {
+                        console.error(e);
+                    });
+            }
+            if (payLoad.file) {
+                const zipAllFiles = this.zipFiles();
+                const fileData = new FormData();
+                fileData.append('image', await zipAllFiles);
+                await axios.post(`/api/upload`, fileData, { headers: { 'Content-Type': 'application/zip' }, params: mergeTitle })
+                    .then(response => {
+                        const fileUrl = response.data.imageUrl;
+                        return fileUrl;
+                    })
+                    //set payload file as url link returned after file upload
+                    .then(response => {
+                        payLoad.file = response;
+                    })
+                    .catch(e => {
+                        console.error(e);
+                    });
+            }
+
+            await axios.post('/api/prints', payLoad)
+                .then(response => {
+                    if (response.status === 200) {
+                        this.setState({ buttonDisplay: 'saved' });
+                    } else {
+                        this.setState({ buttonDisplay: 'error' })
+                    }
+                })
+                .catch(e => {
+                    console.error(e);
+                    this.setState({ buttonDisplay: 'error' });
+                });
+        }
     }
 
     zipFiles() {
@@ -296,9 +333,12 @@ class NewDesign extends React.Component {
                             </div>
                         </label>
                         {this.state.file &&
-                            <ul>
-                                {this.getFiles()}
-                            </ul>
+                            <div>
+                                <ul>
+                                    {this.getFiles()}
+                                </ul>
+                                <p id="fileSize">{this.checkFileSize()}/10mb</p>
+                            </div>
                         }
                         <input id="printFile"
                             type="file" name="printFile"
@@ -798,6 +838,7 @@ class NewDesign extends React.Component {
                         type='submit'>
                         {this.buttonDisplay()}
                     </button>
+                    <p className="errorMessage3"></p>
                 </form>
             </div>
         );
