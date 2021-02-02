@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Print Keeper",
+  "name": "3D Print Keeper",
   "icons": [
     {
       "src": "favicon.ico",
