@@ -220,7 +220,7 @@ li.listFile {
     color: rgb(226, 225, 225);
 }
 
-@media screen and (max-width: 1700px){
+@media screen and (max-width: 1800px){
 
     .newDesignWrapper {
         text-align: center;
@@ -246,7 +246,7 @@ li.listFile {
     }
 }
 
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 570px) {
 
     form {
         width: 100%;

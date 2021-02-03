@@ -130,7 +130,7 @@ form {
 
 
 
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 570px) {
     .expandedPrintWrapper {
         width: 100%;
     }

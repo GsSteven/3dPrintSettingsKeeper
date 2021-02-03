@@ -10,7 +10,8 @@ class ExpandedPrint extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            buttonDisplay: 'save'
+            buttonDisplay: 'save',
+            buildPlateAdhesionType: this.props.printSettings.buildPlateAdhesionType
         }
 
         this.verifyDelete = this.verifyDelete.bind(this);
@@ -51,7 +52,6 @@ class ExpandedPrint extends React.Component {
 
     async removeFileFromHost(file) {
         const fileName = file.split('.com/')[1];
-        console.log(fileName);
         await axios({
             method: 'delete',
             url: '/api/upload',
@@ -59,10 +59,19 @@ class ExpandedPrint extends React.Component {
         });
     }
 
-    setAdhesionType(e) {
-        const value = e.target.value;
+    getImgSource() {
+        if (this.state.tempImg) {
+            return this.state.tempImg;
+        } else if (this.props.printSettings.img) {
+            return this.props.printSettings.img;
+        } else {
+            return defaultImg;
+        }
+    }
 
-        switch (value) {
+    setAdhesionType() {
+
+        switch (this.state.buildPlateAdhesionType) {
             case "skirt":
                 this.setState({ buildPlateAdhesionType: "skirt" });
                 break;
@@ -84,7 +93,7 @@ class ExpandedPrint extends React.Component {
                 return (
                     <div className="subclass">
                         <label htmlFor="skirtLineCount" >Skirt Line Count</label>
-                        <input type="number" name="skirtLineCount" id="skirtLineCount" className="subClassInput" />
+                        <input type="number" name="skirtLineCount" id="skirtLineCount" className="subClassInput" onChange={this.handleChange} />
                     </div>
                 )
             case "brim":
@@ -92,11 +101,11 @@ class ExpandedPrint extends React.Component {
                     <div>
                         <div className="subclass">
                             <label htmlFor="brimWidth" >Brim Width</label>
-                            <input type="number" name="brimWidth" id="brimWidth" className="subClassInput" /><p className="unit">mm</p>
+                            <input type="number" name="brimWidth" id="brimWidth" className="subClassInput" onChange={this.handleChange} /><p className="unit">mm</p>
                         </div>
                         <div className="subclass">
                             <label htmlFor="brimLineCount" >Brim Line Count</label>
-                            <input type="number" name="brimLineCount" id="brimLineCount" className="subClassInput" />
+                            <input type="number" name="brimLineCount" id="brimLineCount" className="subClassInput" onChange={this.handleChange} />
                         </div>
                         <div className="subclass">
                             <label htmlFor="brimOnlyOnOutside">Brim Only on Outside</label>
@@ -111,7 +120,7 @@ class ExpandedPrint extends React.Component {
                 return (
                     <div className="subclass">
                         <label htmlFor="raftAirGap" >Raft Air Gap</label>
-                        <input type="number" name="raftAirGap" id="raftAirGap" className="subClassInput" /><p className="unit">mm</p>
+                        <input type="number" name="raftAirGap" id="raftAirGap" className="subClassInput" onChange={this.handleChange} /><p className="unit">mm</p>
                     </div>
                 )
             case "none":
@@ -155,7 +164,6 @@ class ExpandedPrint extends React.Component {
     }
 
     handleChange(e) {
-        console.log(e.target);
         const setting = e.target.name;
         const value = e.target.value;
         //if image get the files not value
@@ -229,6 +237,7 @@ class ExpandedPrint extends React.Component {
     }
 
     componentDidMount() {
+        this.setAdhesionType();
         //fill in saved values
         for (const key in this.props.printSettings) {
             const input = document.getElementById(key);
@@ -263,7 +272,7 @@ class ExpandedPrint extends React.Component {
                         <label htmlFor="img" className="mainLabel">
                             <p>Add/Change image</p>
                             <div id="printImg">
-                                <img src={this.props.printSettings.img ? this.props.printSettings.img : defaultImg} alt=''></img>
+                                <img src={this.getImgSource()} alt=''></img>
                             </div>
                         </label>
                         <input id="img"
@@ -739,15 +748,15 @@ class ExpandedPrint extends React.Component {
                                     <option value="none">None</option>
                                 </select>
                             </div>
-                            {this.state.buildPlateAdhesionType && this.getAdhesionType()}
+                            {this.getAdhesionType()}
                         </div>
 
 
                         {/* Specail Modes */}
-                        <h4 className="displaySettingSubject" id="specailModes" onClick={this.handleToggle}>
-                            Specail Modes <img className="arrowIcon" src={arrow} alt="arrowIcon" />
+                        <h4 className="displaySettingSubject" id="specialModes" onClick={this.handleToggle}>
+                            Special Modes <img className="arrowIcon" src={arrow} alt="arrowIcon" />
                         </h4>
-                        <div className="settingsSubclass" id="specailModesSettings">
+                        <div className="settingsSubclass" id="specialModesSettings">
                             <div className="subclass">
                                 <label htmlFor="printSequence">Print Sequence</label>
                                 <select name="printSequence" id="printSequence" className="subClassInput" onChange={this.handleChange}>

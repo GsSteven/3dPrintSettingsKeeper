@@ -54,7 +54,7 @@ class NewDesign extends React.Component {
                 return (
                     <div className="subclass">
                         <label htmlFor="skirtLineCount" >Skirt Line Count</label>
-                        <input type="number" name="skirtLineCount" id="skirtLineCount" className="subClassInput" />
+                        <input type="number" step="any" name="skirtLineCount" id="skirtLineCount" className="subClassInput" onChange={this.handleChange} />
                     </div>
                 )
             case "brim":
@@ -62,15 +62,15 @@ class NewDesign extends React.Component {
                     <div>
                         <div className="subclass">
                             <label htmlFor="brimWidth" >Brim Width</label>
-                            <input type="number" name="brimWidth" id="brimWidth" className="subClassInput" /><p className="unit">mm</p>
+                            <input type="number" step="any" name="brimWidth" id="brimWidth" className="subClassInput" onChange={this.handleChange} /><p className="unit">mm</p>
                         </div>
                         <div className="subclass">
                             <label htmlFor="brimLineCount" >Brim Line Count</label>
-                            <input type="number" name="brimLineCount" id="brimLineCount" className="subClassInput" />
+                            <input type="number" step="any" name="brimLineCount" id="brimLineCount" className="subClassInput" onChange={this.handleChange} />
                         </div>
                         <div className="subclass">
                             <label htmlFor="brimOnlyOnOutside">Brim Only on Outside</label>
-                            <input type="checkbox" name="brimOnlyOnOutside" id="brimOnlyOnOutside" value="on" className="subClassInput" />
+                            <input type="checkbox" name="brimOnlyOnOutside" id="brimOnlyOnOutside" value="on" className="subClassInput" onChange={this.handleChange} />
                         </div>
                     </div>
                 )
@@ -78,7 +78,7 @@ class NewDesign extends React.Component {
                 return (
                     <div className="subclass">
                         <label htmlFor="raftAirGap" >Raft Air Gap</label>
-                        <input type="number" name="raftAirGap" id="raftAirGap" className="subClassInput" /><p className="unit">mm</p>
+                        <input type="number" step="any" name="raftAirGap" id="raftAirGap" className="subClassInput" onChange={this.handleChange} /><p className="unit" >mm</p>
                     </div>
                 )
             case "none":
@@ -133,7 +133,9 @@ class NewDesign extends React.Component {
     }
 
     checkFileSize() {
-        if (this.state.file[0]) {
+        if (!this.state.file) {
+            return 0;
+        } else if (this.state.file[0]) {
             const fileSize = this.state.file.map(file => {
                 return file.size
             });
@@ -175,6 +177,9 @@ class NewDesign extends React.Component {
 
         //if image get the files not value
         if (setting === "img") {
+            if (!e.target.files[0]) {
+                return;
+            }
             //check for spacing in names
             if (this.checkFileName(e.target.files[0].name)) {
                 errorElement1.innerHTML = "File names must not include space(s)";
@@ -205,11 +210,6 @@ class NewDesign extends React.Component {
                         file: filesArray
                     };
                 });
-                if (this.checkFileSize > 10) {
-                    errorElement2.innerHTML = 'File size is over the 10mb limit';
-                } else {
-                    errorElement2.innerHTML = '';
-                }
             }
         } else {
             this.setState({ [setting]: value });
@@ -223,8 +223,8 @@ class NewDesign extends React.Component {
         const payLoad = {};
 
         //if file size over limit display error
-        if (this.checkFileSize() > 10) {
-            errorMessage3.innerHTML = 'File size is over the 10mb limit';
+        if (this.checkFileSize() > 20) {
+            errorMessage3.innerHTML = 'File size is over the 20mb limit';
         } else {
             errorMessage3.innerHTML = '';
 
@@ -294,7 +294,10 @@ class NewDesign extends React.Component {
             let name = file.name;
             filesFolder.file(name, file, { base64: true });
         });
-        const zippedFiles = zip.generateAsync({ type: "blob" })
+        const zippedFiles = zip.generateAsync({
+            type: "blob",
+            compression: "DEFLATE"
+        })
             .then(blob => {
                 return blob;
             });
@@ -337,7 +340,7 @@ class NewDesign extends React.Component {
                                 <ul>
                                     {this.getFiles()}
                                 </ul>
-                                <p id="fileSize">{this.checkFileSize()}/10mb</p>
+                                <p id="fileSize">{this.checkFileSize()}/20mb</p>
                             </div>
                         }
                         <input id="printFile"
@@ -356,39 +359,39 @@ class NewDesign extends React.Component {
                         <div className="settingsSubclass" id="qualitySettings">
                             <div className="subclass">
                                 <label htmlFor="layerHeight">Layer Height</label>
-                                <input type="number" name="layerHeight" id="layerHeight" className="subClassInput" onChange={this.handleChange} /><p className="unit">mm</p>
+                                <input type="number" step="any" name="layerHeight" id="layerHeight" className="subClassInput" onChange={this.handleChange} /><p className="unit">mm</p>
                             </div>
                             <div className="subclass">
                                 <label htmlFor="initialLayerHeight">Initial Layer Height</label>
-                                <input type="number" name="initialLayerHeight" id="initialLayerHeight" className="subClassInput" onChange={this.handleChange} /><p className="unit">mm</p>
+                                <input type="number" step="any" name="initialLayerHeight" id="initialLayerHeight" className="subClassInput" onChange={this.handleChange} /><p className="unit">mm</p>
                             </div>
                             <div className="subclass">
                                 <label htmlFor="lineWidth">Line Width</label>
-                                <input type="number" name="lineWidth" id="lineWidth" className="subClassInput" onChange={this.handleChange} /><p className="unit">mm</p>
+                                <input type="number" step="any" name="lineWidth" id="lineWidth" className="subClassInput" onChange={this.handleChange} /><p className="unit">mm</p>
                             </div>
                             <div className="subclass">
                                 <label htmlFor="wallLineWidth">Wall Line Width</label>
-                                <input type="number" name="wallLineWidth" id="wallLineWidth" className="subClassInput" onChange={this.handleChange} /><p className="unit">mm</p>
+                                <input type="number" step="any" name="wallLineWidth" id="wallLineWidth" className="subClassInput" onChange={this.handleChange} /><p className="unit">mm</p>
                             </div>
                             <div className="subclass">
                                 <label htmlFor="outerWallLineWidth">Outer Wall Line Width</label>
-                                <input type="number" name="outerWallLineWidth" id="outerWallLineWidth" className="subClassInput" onChange={this.handleChange} /><p className="unit">mm</p>
+                                <input type="number" step="any" name="outerWallLineWidth" id="outerWallLineWidth" className="subClassInput" onChange={this.handleChange} /><p className="unit">mm</p>
                             </div>
                             <div className="subclass">
                                 <label htmlFor="innderWallLineWidth">Inner Wall Line Width</label>
-                                <input type="number" name="innderWallLineWidth" id="innderWallLineWidth" className="subClassInput" onChange={this.handleChange} /><p className="unit">mm</p>
+                                <input type="number" step="any" name="innderWallLineWidth" id="innderWallLineWidth" className="subClassInput" onChange={this.handleChange} /><p className="unit">mm</p>
                             </div>
                             <div className="subclass">
                                 <label htmlFor="topBottomLineWidth">Top/Bottom Line Width</label>
-                                <input type="number" name="topBottomLineWidth" id="topBottomLineWidth" className="subClassInput" onChange={this.handleChange} /><p className="unit">mm</p>
+                                <input type="number" step="any" name="topBottomLineWidth" id="topBottomLineWidth" className="subClassInput" onChange={this.handleChange} /><p className="unit">mm</p>
                             </div>
                             <div className="subclass">
                                 <label htmlFor="infillLineWidth">Infill Line Width</label>
-                                <input type="number" name="infillLineWidth" id="infillLineWidth" className="subClassInput" onChange={this.handleChange} /><p className="unit">mm</p>
+                                <input type="number" step="any" name="infillLineWidth" id="infillLineWidth" className="subClassInput" onChange={this.handleChange} /><p className="unit">mm</p>
                             </div>
                             <div className="subclass">
                                 <label htmlFor="initialLayerLineWidth">Initial Layer Line Width</label>
-                                <input type="number" name="initialLayerLineWidth" id="initialLayerLineWidth" className="subClassInput" onChange={this.handleChange} /><p className="unit">%</p>
+                                <input type="number" step="any" name="initialLayerLineWidth" id="initialLayerLineWidth" className="subClassInput" onChange={this.handleChange} /><p className="unit">%</p>
                             </div>
                         </div>
 
@@ -400,31 +403,31 @@ class NewDesign extends React.Component {
                         <div className="settingsSubclass" id="shellSettings">
                             <div className="subclass">
                                 <label htmlFor="wallThickness">Wall Thickness</label>
-                                <input type="number" name="wallThickness" id="wallThickness" className="subClassInput" onChange={this.handleChange} /><p className="unit">mm</p>
+                                <input type="number" step="any" name="wallThickness" id="wallThickness" className="subClassInput" onChange={this.handleChange} /><p className="unit">mm</p>
                             </div>
                             <div className="subclass">
                                 <label htmlFor="wallLineCount">Wall Line Count</label>
-                                <input type="number" name="wallLineCount" id="wallLineCount" className="subClassInput" onChange={this.handleChange} />
+                                <input type="number" step="any" name="wallLineCount" id="wallLineCount" className="subClassInput" onChange={this.handleChange} />
                             </div>
                             <div className="subclass">
                                 <label htmlFor="topBottomThickness">Top/Bottom Thickness</label>
-                                <input type="number" name="topBottomThickness" id="topBottomThickness" className="subClassInput" onChange={this.handleChange} /><p className="unit">mm</p>
+                                <input type="number" step="any" name="topBottomThickness" id="topBottomThickness" className="subClassInput" onChange={this.handleChange} /><p className="unit">mm</p>
                             </div>
                             <div className="subclass">
                                 <label htmlFor="topThickness">Top Thickness</label>
-                                <input type="number" name="topThickness" id="topThickness" className="subClassInput" onChange={this.handleChange} /><p className="unit">mm</p>
+                                <input type="number" step="any" name="topThickness" id="topThickness" className="subClassInput" onChange={this.handleChange} /><p className="unit">mm</p>
                             </div>
                             <div className="subclass">
                                 <label htmlFor="topLayers">Top Layers</label>
-                                <input type="number" name="topLayers" id="topLayers" className="subClassInput" onChange={this.handleChange} />
+                                <input type="number" step="any" name="topLayers" id="topLayers" className="subClassInput" onChange={this.handleChange} />
                             </div>
                             <div className="subclass">
                                 <label htmlFor="bottomThickness">Bottom Thickness</label>
-                                <input type="number" name="bottomThickness" id="bottomThickness" className="subClassInput" onChange={this.handleChange} /><p className="unit">mm</p>
+                                <input type="number" step="any" name="bottomThickness" id="bottomThickness" className="subClassInput" onChange={this.handleChange} /><p className="unit">mm</p>
                             </div>
                             <div className="subclass">
                                 <label htmlFor="bottomLayers">Bottom Layers</label>
-                                <input type="number" name="bottomLayers" id="bottomLayers" className="subClassInput" onChange={this.handleChange} />
+                                <input type="number" step="any" name="bottomLayers" id="bottomLayers" className="subClassInput" onChange={this.handleChange} />
                             </div>
                             <div className="subclass">
                                 <label htmlFor="fillGapsBetweenWalls">Fill Gaps Between Walls</label>
@@ -436,7 +439,7 @@ class NewDesign extends React.Component {
                             </div>
                             <div className="subclass">
                                 <label htmlFor="horizontalExpansion">Horizontal Expansion</label>
-                                <input type="number" name="horizontalExpansion" id="horizontalExpansion" className="subClassInput" onChange={this.handleChange} /><p className="unit">mm</p>
+                                <input type="number" step="any" name="horizontalExpansion" id="horizontalExpansion" className="subClassInput" onChange={this.handleChange} /><p className="unit">mm</p>
                             </div>
                             <div className="subclass">
                                 <label htmlFor="enableIroning">Enable Ironing</label>
@@ -452,11 +455,11 @@ class NewDesign extends React.Component {
                         <div className="settingsSubclass" id="infillSettings">
                             <div className="subclass">
                                 <label htmlFor="infillDesnsity">Infill Density</label>
-                                <input type="number" name="infillDesnsity" id="infillDesnsity" className="subClassInput" onChange={this.handleChange} /><p className="unit">%</p>
+                                <input type="number" step="any" name="infillDesnsity" id="infillDesnsity" className="subClassInput" onChange={this.handleChange} /><p className="unit">%</p>
                             </div>
                             <div className="subclass">
                                 <label htmlFor="infillLineDistance">Infill Line Distance</label>
-                                <input type="number" name="infillLineDistance" id="infillLineDistance" className="subClassInput" onChange={this.handleChange} /><p className="unit">mm</p>
+                                <input type="number" step="any" name="infillLineDistance" id="infillLineDistance" className="subClassInput" onChange={this.handleChange} /><p className="unit">mm</p>
                             </div>
                             <div className="subclass">
                                 <label htmlFor="infillPattern">Infill Pattern</label>
@@ -479,19 +482,19 @@ class NewDesign extends React.Component {
                             </div>
                             <div className="subclass">
                                 <label htmlFor="infillLineMultiplier">Infill Line Multiplier</label>
-                                <input type="number" name="infillLineMultiplier" id="infillLineMultiplier" className="subClassInput" onChange={this.handleChange} />
+                                <input type="number" step="any" name="infillLineMultiplier" id="infillLineMultiplier" className="subClassInput" onChange={this.handleChange} />
                             </div>
                             <div className="subclass">
                                 <label htmlFor="infillOverlapPercentage">Infill Overlap Percentage</label>
-                                <input type="number" name="infillOverlapPercentage" id="infillOverlapPercentage" className="subClassInput" onChange={this.handleChange} /><p className="unit">%</p>
+                                <input type="number" step="any" name="infillOverlapPercentage" id="infillOverlapPercentage" className="subClassInput" onChange={this.handleChange} /><p className="unit">%</p>
                             </div>
                             <div className="subclass">
                                 <label htmlFor="infillLayerThickness">Infill Layer Thickness</label>
-                                <input type="number" name="infillLayerThickness" id="infillLayerThickness" className="subClassInput" onChange={this.handleChange} /><p className="unit">mm</p>
+                                <input type="number" step="any" name="infillLayerThickness" id="infillLayerThickness" className="subClassInput" onChange={this.handleChange} /><p className="unit">mm</p>
                             </div>
                             <div className="subclass">
                                 <label htmlFor="gradualInfillSteps">Gradual Infill Steps</label>
-                                <input type="number" name="gradualInfillSteps" id="gradualInfillSteps" className="subClassInput" onChange={this.handleChange} />
+                                <input type="number" step="any" name="gradualInfillSteps" id="gradualInfillSteps" className="subClassInput" onChange={this.handleChange} />
                             </div>
                         </div>
 
@@ -503,27 +506,27 @@ class NewDesign extends React.Component {
                         <div className="settingsSubclass" id="materialSettings">
                             <div className="subclass">
                                 <label htmlFor="printingTemperature">Printing Temperature</label>
-                                <input type="number" name="printingTemperature" id="printingTemperature" className="subClassInput" onChange={this.handleChange} /><p className="unit">°C</p>
+                                <input type="number" step="any" name="printingTemperature" id="printingTemperature" className="subClassInput" onChange={this.handleChange} /><p className="unit">°C</p>
                             </div>
                             <div className="subclass">
                                 <label htmlFor="printingTemperatureInitialLayer">Printing Temperature Initial Layer</label>
-                                <input type="number" name="printingTemperatureInitialLayer" id="printingTemperatureInitialLayer" className="subClassInput" onChange={this.handleChange} /><p className="unit">°C</p>
+                                <input type="number" step="any" name="printingTemperatureInitialLayer" id="printingTemperatureInitialLayer" className="subClassInput" onChange={this.handleChange} /><p className="unit">°C</p>
                             </div>
                             <div className="subclass">
                                 <label htmlFor="initialPrintingTemperature">Initial Printing Temperature</label>
-                                <input type="number" name="initialPrintingTemperature" id="initialPrintingTemperature" className="subClassInput" onChange={this.handleChange} /><p className="unit">°C</p>
+                                <input type="number" step="any" name="initialPrintingTemperature" id="initialPrintingTemperature" className="subClassInput" onChange={this.handleChange} /><p className="unit">°C</p>
                             </div>
                             <div className="subclass">
                                 <label htmlFor="finalPrintingTemperature">Final Printing Temperature</label>
-                                <input type="number" name="finalPrintingTemperature" id="finalPrintingTemperature" className="subClassInput" onChange={this.handleChange} /><p className="unit">°C</p>
+                                <input type="number" step="any" name="finalPrintingTemperature" id="finalPrintingTemperature" className="subClassInput" onChange={this.handleChange} /><p className="unit">°C</p>
                             </div>
                             <div className="subclass">
                                 <label htmlFor="buildPlateTemperature">Build Plate Temperature</label>
-                                <input type="number" name="buildPlateTemperature" id="buildPlateTemperature" className="subClassInput" onChange={this.handleChange} /><p className="unit">°C</p>
+                                <input type="number" step="any" name="buildPlateTemperature" id="buildPlateTemperature" className="subClassInput" onChange={this.handleChange} /><p className="unit">°C</p>
                             </div>
                             <div className="subclass">
                                 <label htmlFor="buildPlateTemperatureInitialLayer">Build Plate Temperature Initial Layer</label>
-                                <input type="number" name="buildPlateTemperatureInitialLayer" id="buildPlateTemperatureInitialLayer" className="subClassInput" onChange={this.handleChange} /><p className="unit">°C</p>
+                                <input type="number" step="any" name="buildPlateTemperatureInitialLayer" id="buildPlateTemperatureInitialLayer" className="subClassInput" onChange={this.handleChange} /><p className="unit">°C</p>
                             </div>
                         </div>
 
@@ -535,43 +538,43 @@ class NewDesign extends React.Component {
                         <div className="settingsSubclass" id="speedSettings">
                             <div className="subclass">
                                 <label htmlFor="printSpeed">Print Speed</label>
-                                <input type="number" name="printSpeed" id="printSpeed" className="subClassInput" onChange={this.handleChange} /><p className="unit">mm/s</p>
+                                <input type="number" step="any" name="printSpeed" id="printSpeed" className="subClassInput" onChange={this.handleChange} /><p className="unit">mm/s</p>
                             </div>
                             <div className="subclass">
                                 <label htmlFor="infillSpeed">Infill Speed</label>
-                                <input type="number" name="infillSpeed" id="infillSpeed" className="subClassInput" onChange={this.handleChange} /><p className="unit">mm/s</p>
+                                <input type="number" step="any" name="infillSpeed" id="infillSpeed" className="subClassInput" onChange={this.handleChange} /><p className="unit">mm/s</p>
                             </div>
                             <div className="subclass">
                                 <label htmlFor="wallSpeed">Wall Speed</label>
-                                <input type="number" name="wallSpeed" id="wallSpeed" className="subClassInput" onChange={this.handleChange} /><p className="unit">mm/s</p>
+                                <input type="number" step="any" name="wallSpeed" id="wallSpeed" className="subClassInput" onChange={this.handleChange} /><p className="unit">mm/s</p>
                             </div>
                             <div className="subclass">
                                 <label htmlFor="outerWallSpeed">Outer Wall Speed</label>
-                                <input type="number" name="outerWallSpeed" id="outerWallSpeed" className="subClassInput" onChange={this.handleChange} /><p className="unit">mm/s</p>
+                                <input type="number" step="any" name="outerWallSpeed" id="outerWallSpeed" className="subClassInput" onChange={this.handleChange} /><p className="unit">mm/s</p>
                             </div>
                             <div className="subclass">
                                 <label htmlFor="innerWallSpeed">Inner Wall Speed</label>
-                                <input type="number" name="innerWallSpeed" id="innerWallSpeed" className="subClassInput" onChange={this.handleChange} /><p className="unit">mm/s</p>
+                                <input type="number" step="any" name="innerWallSpeed" id="innerWallSpeed" className="subClassInput" onChange={this.handleChange} /><p className="unit">mm/s</p>
                             </div>
                             <div className="subclass">
                                 <label htmlFor="topBottomSpeed">Top/Bottom Speed</label>
-                                <input type="number" name="topBottomSpeed" id="topBottomSpeed" className="subClassInput" onChange={this.handleChange} /><p className="unit">mm/s</p>
+                                <input type="number" step="any" name="topBottomSpeed" id="topBottomSpeed" className="subClassInput" onChange={this.handleChange} /><p className="unit">mm/s</p>
                             </div>
                             <div className="subclass">
                                 <label htmlFor="supportSpeed">Support Speed</label>
-                                <input type="number" name="supportSpeed" id="supportSpeed" className="subClassInput" onChange={this.handleChange} /><p className="unit">mm/s</p>
+                                <input type="number" step="any" name="supportSpeed" id="supportSpeed" className="subClassInput" onChange={this.handleChange} /><p className="unit">mm/s</p>
                             </div>
                             <div className="subclass">
                                 <label htmlFor="travelSpeed">Travel Speed</label>
-                                <input type="number" name="travelSpeed" id="travelSpeed" className="subClassInput" onChange={this.handleChange} /><p className="unit">mm/s</p>
+                                <input type="number" step="any" name="travelSpeed" id="travelSpeed" className="subClassInput" onChange={this.handleChange} /><p className="unit">mm/s</p>
                             </div>
                             <div className="subclass">
                                 <label htmlFor="initialLayerSpeed">Initial Layer Speed</label>
-                                <input type="number" name="initialLayerSpeed" id="initialLayerSpeed" className="subClassInput" onChange={this.handleChange} /><p className="unit">mm/s</p>
+                                <input type="number" step="any" name="initialLayerSpeed" id="initialLayerSpeed" className="subClassInput" onChange={this.handleChange} /><p className="unit">mm/s</p>
                             </div>
                             <div className="subclass">
                                 <label htmlFor="skirtBrimSpeed">Skirt/Brim Speed</label>
-                                <input type="number" name="skirtBrimSpeed" id="skirtBrimSpeed" className="subClassInput" onChange={this.handleChange} /><p className="unit">mm/s</p>
+                                <input type="number" step="any" name="skirtBrimSpeed" id="skirtBrimSpeed" className="subClassInput" onChange={this.handleChange} /><p className="unit">mm/s</p>
                             </div>
                             <div className="subclass">
                                 <label htmlFor="enableAccelerationControl">Enable Acceleration Control</label>
@@ -599,11 +602,11 @@ class NewDesign extends React.Component {
                             </div>
                             <div className="subclass">
                                 <label htmlFor="retractionDistance">Retraction Distance</label>
-                                <input type="number" name="retractionDistance" id="retractionDistance" className="subClassInput" onChange={this.handleChange} /><p className="unit">mm/s</p>
+                                <input type="number" step="any" name="retractionDistance" id="retractionDistance" className="subClassInput" onChange={this.handleChange} /><p className="unit">mm/s</p>
                             </div>
                             <div className="subclass">
                                 <label htmlFor="retractionSpeed">Retraction Speed</label>
-                                <input type="number" name="retractionSpeed" id="retractionSpeed" className="subClassInput" onChange={this.handleChange} /><p className="unit">mm/s</p>
+                                <input type="number" step="any" name="retractionSpeed" id="retractionSpeed" className="subClassInput" onChange={this.handleChange} /><p className="unit">mm/s</p>
                             </div>
                             <div className="subclass">
                                 <label htmlFor="combingMode">Combing Mode</label>
@@ -625,7 +628,7 @@ class NewDesign extends React.Component {
                             </div>
                             <div className="subclass">
                                 <label htmlFor="travelAvoidDistance">Travel Avoid Distance</label>
-                                <input type="number" name="travelAvoidDistance" id="travelAvoidDistance" className="subClassInput" onChange={this.handleChange} /><p className="unit">mm/s</p>
+                                <input type="number" step="any" name="travelAvoidDistance" id="travelAvoidDistance" className="subClassInput" onChange={this.handleChange} /><p className="unit">mm/s</p>
                             </div>
                             <div className="subclass">
                                 <label htmlFor="zHopWhenRetracted">Z Hop When Retracted</label>
@@ -645,39 +648,39 @@ class NewDesign extends React.Component {
                             </div>
                             <div className="subclass">
                                 <label htmlFor="fanSpeed">Fan Speed</label>
-                                <input type="number" name="fanSpeed" id="fanSpeed" className="subClassInput" onChange={this.handleChange} /><p className="unit">%</p>
+                                <input type="number" step="any" name="fanSpeed" id="fanSpeed" className="subClassInput" onChange={this.handleChange} /><p className="unit">%</p>
                             </div>
                             <div className="subclass">
                                 <label htmlFor="regularFanSpeed">Regular Fan Speed</label>
-                                <input type="number" name="regularFanSpeed" id="regularFanSpeed" className="subClassInput" onChange={this.handleChange} /><p className="unit">%</p>
+                                <input type="number" step="any" name="regularFanSpeed" id="regularFanSpeed" className="subClassInput" onChange={this.handleChange} /><p className="unit">%</p>
                             </div>
                             <div className="subclass">
                                 <label htmlFor="maximumFanSpeed">Maximum Fan Speed</label>
-                                <input type="number" name="maximumFanSpeed" id="maximumFanSpeed" className="subClassInput" onChange={this.handleChange} /><p className="unit">%</p>
+                                <input type="number" step="any" name="maximumFanSpeed" id="maximumFanSpeed" className="subClassInput" onChange={this.handleChange} /><p className="unit">%</p>
                             </div>
                             <div className="subclass">
                                 <label htmlFor="regularMaximumFanSpeedThreshold">Regular/Maximum Fan Speed Threshold</label>
-                                <input type="number" name="regularMaximumFanSpeedThreshold" id="regularMaximumFanSpeedThreshold" className="subClassInput" onChange={this.handleChange} /><p className="unit">s</p>
+                                <input type="number" step="any" name="regularMaximumFanSpeedThreshold" id="regularMaximumFanSpeedThreshold" className="subClassInput" onChange={this.handleChange} /><p className="unit">s</p>
                             </div>
                             <div className="subclass">
                                 <label htmlFor="initialFanSpeed">Initial Fan Speed</label>
-                                <input type="number" name="initialFanSpeed" id="initialFanSpeed" className="subClassInput" onChange={this.handleChange} /><p className="unit">%</p>
+                                <input type="number" step="any" name="initialFanSpeed" id="initialFanSpeed" className="subClassInput" onChange={this.handleChange} /><p className="unit">%</p>
                             </div>
                             <div className="subclass">
                                 <label htmlFor="regularFanSpeedAtHeight">Regular Fan Speed at Height</label>
-                                <input type="number" name="regularFanSpeedAtHeight" id="regularFanSpeedAtHeight" className="subClassInput" onChange={this.handleChange} /><p className="unit">mm</p>
+                                <input type="number" step="any" name="regularFanSpeedAtHeight" id="regularFanSpeedAtHeight" className="subClassInput" onChange={this.handleChange} /><p className="unit">mm</p>
                             </div>
                             <div className="subclass">
                                 <label htmlFor="regularFanSpeedAtLayer">Regular Fan Speed at Layer</label>
-                                <input type="number" name="regularFanSpeedAtLayer" id="regularFanSpeedAtLayer" className="subClassInput" onChange={this.handleChange} />
+                                <input type="number" step="any" name="regularFanSpeedAtLayer" id="regularFanSpeedAtLayer" className="subClassInput" onChange={this.handleChange} />
                             </div>
                             <div className="subclass">
                                 <label htmlFor="minimumLayerTime">Minimum Layer Time</label>
-                                <input type="number" name="minimumLayerTime" id="minimumLayerTime" className="subClassInput" onChange={this.handleChange} /><p className="unit">s</p>
+                                <input type="number" step="any" name="minimumLayerTime" id="minimumLayerTime" className="subClassInput" onChange={this.handleChange} /><p className="unit">s</p>
                             </div>
                             <div className="subclass">
                                 <label htmlFor="minimumSpeed">Minimum Speed</label>
-                                <input type="number" name="minimumSpeed" id="minimumSpeed" className="subClassInput" onChange={this.handleChange} /><p className="unit">mm/s</p>
+                                <input type="number" step="any" name="minimumSpeed" id="minimumSpeed" className="subClassInput" onChange={this.handleChange} /><p className="unit">mm/s</p>
                             </div>
                             <div className="subclass">
                                 <label htmlFor="liftHead">Lift Head</label>
@@ -705,7 +708,7 @@ class NewDesign extends React.Component {
                             </div>
                             <div className="subclass">
                                 <label htmlFor="supportOverhangAngle">Support Overhang Angle</label>
-                                <input type="number" name="supportOverhangAngle" id="supportOverhangAngle" className="subClassInput" onChange={this.handleChange} /><p className="unit">°</p>
+                                <input type="number" step="any" name="supportOverhangAngle" id="supportOverhangAngle" className="subClassInput" onChange={this.handleChange} /><p className="unit">°</p>
                             </div>
                             <div className="subclass">
                                 <label htmlFor="supportPattern">Support Pattern</label>
@@ -722,19 +725,19 @@ class NewDesign extends React.Component {
                             </div>
                             <div className="subclass">
                                 <label htmlFor="supportDensity">Support Density</label>
-                                <input type="number" name="supportDensity" id="supportDensity" className="subClassInput" onChange={this.handleChange} /><p className="unit">%</p>
+                                <input type="number" step="any" name="supportDensity" id="supportDensity" className="subClassInput" onChange={this.handleChange} /><p className="unit">%</p>
                             </div>
                             <div className="subclass">
                                 <label htmlFor="supportHorizontalExpansion">Support Horizontal Expansion</label>
-                                <input type="number" name="supportHorizontalExpansion" id="supportHorizontalExpansion" className="subClassInput" onChange={this.handleChange} /><p className="unit">mm</p>
+                                <input type="number" step="any" name="supportHorizontalExpansion" id="supportHorizontalExpansion" className="subClassInput" onChange={this.handleChange} /><p className="unit">mm</p>
                             </div>
                             <div className="subclass">
                                 <label htmlFor="supportInfillLayerThickness">Support Infill Layer Thickness</label>
-                                <input type="number" name="supportInfillLayerThickness" id="supportInfillLayerThickness" className="subClassInput" onChange={this.handleChange} /><p className="unit">mm</p>
+                                <input type="number" step="any" name="supportInfillLayerThickness" id="supportInfillLayerThickness" className="subClassInput" onChange={this.handleChange} /><p className="unit">mm</p>
                             </div>
                             <div className="subclass">
                                 <label htmlFor="gradualSupportInfillSteps">Gradual Support Infill Steps</label>
-                                <input type="number" name="gradualSupportInfillSteps" id="gradualSupportInfillSteps" className="subClassInput" onChange={this.handleChange} />
+                                <input type="number" step="any" name="gradualSupportInfillSteps" id="gradualSupportInfillSteps" className="subClassInput" onChange={this.handleChange} />
                             </div>
                             <div className="subclass">
                                 <label htmlFor="enableSupportInterface">Enable Support Interface</label>
@@ -771,10 +774,10 @@ class NewDesign extends React.Component {
 
 
                         {/* Specail Modes */}
-                        <h4 className="settingSubject" id="specailModes" onClick={this.handleToggle}>
-                            Specail Modes <img className="arrowIcon" src={arrow} alt="arrowIcon" />
+                        <h4 className="settingSubject" id="specialModes" onClick={this.handleToggle}>
+                            Special Modes <img className="arrowIcon" src={arrow} alt="arrowIcon" />
                         </h4>
-                        <div className="settingsSubclass" id="specailModesSettings">
+                        <div className="settingsSubclass" id="specialModesSettings">
                             <div className="subclass">
                                 <label htmlFor="printSequence">Print Sequence</label>
                                 <select name="printSequence" id="printSequence" className="subClassInput" onChange={this.handleChange}>
@@ -829,7 +832,7 @@ class NewDesign extends React.Component {
 
                     <label htmlFor="printTime" className="mainLabel">Time to print (hours)</label>
                     <input id="printTime"
-                        type="number"
+                        type="number" step="any"
                         name="printTime"
                         required
                         onChange={this.handleChange}
