@@ -2,15 +2,20 @@ import React from 'react';
 import axios from 'axios';
 import './SavedDesigns.css';
 import Print from './../Print/Print';
+import searchIcon from './../../images/searchIcon.png';
 
 
 class SavedDesigns extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            prints: []
+            prints: [],
+            searchQuery: ''
         }
         this.getPrints = this.getPrints.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+        this.search = this.search.bind(this);
+        this.handleKeyPress = this.handleKeyPress.bind(this);
     }
 
     async getPrints() {
@@ -18,6 +23,35 @@ class SavedDesigns extends React.Component {
             .then(response => {
                 this.setState({ prints: response.data });
             })
+    }
+
+    handleChange(e) {
+        const search = e.target.value;
+        if (search) {
+            this.setState({
+                searchQuery: search
+            });
+        } else {
+            this.getPrints();
+        }
+    }
+
+    search() {
+        const filteredPrints = this.state.prints.filter(print => {
+            const printTitle = print.printSettings.title.toLowerCase();
+            const query = this.state.searchQuery.toLowerCase();
+            return printTitle.indexOf(query) !== -1;
+        });
+        this.setState({
+            prints: filteredPrints
+        });
+    }
+
+    handleKeyPress(e) {
+        const keyChar = e.charCode;
+        if (keyChar === 13) {
+            this.search();
+        }
     }
 
     componentDidMount() {
@@ -39,6 +73,11 @@ class SavedDesigns extends React.Component {
         return (
             <div className="savedDesignsWrapper">
                 <h1 className="saved"><u>Saved</u></h1>
+                <div className="searchBox" onKeyPress={this.handleKeyPress}>
+                    <img src={searchIcon} alt="search Icon" />
+                    <input type="text" className="searchBar" onChange={this.handleChange} />
+                    <button type="button" className="searchButton" onClick={this.search}>Search</button>
+                </div>
                 <div className="designs">
                     {prints}
                 </div>

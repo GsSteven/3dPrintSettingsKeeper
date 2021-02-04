@@ -1,5 +1,5 @@
 .expandedPrintWrapper {
-    background-color: rgb(245, 245, 245);
+    background-color: rgb(235, 235, 235);
     border: 2px solid black;
     width: 75%;
     height: 90%;
@@ -127,11 +127,13 @@ form {
     background-size: cover;
 }
 
-
-
-
 @media screen and (max-width: 570px) {
     .expandedPrintWrapper {
         width: 100%;
+        height: 95em;
+    }
+
+    .closeButton {
+        margin: 20px 0;
     }
 }
