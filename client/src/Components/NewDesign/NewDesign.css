@@ -27,7 +27,8 @@ form {
 
 #title,
 #machineUsed,
-#printTime {
+#printTime,
+#materialUsed {
     text-align: center;
     font-size: 1.5em;
     font-family: "Russo One", sans-serif;
@@ -35,6 +36,11 @@ form {
 
 #machineUsed {
     margin-bottom: .5em;
+}
+
+#materialUsed {
+    margin-bottom: .5em;
+    width: 4em;
 }
 
 #printTime {

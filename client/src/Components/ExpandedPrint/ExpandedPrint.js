@@ -831,6 +831,14 @@ class ExpandedPrint extends React.Component {
                         onChange={this.handleChange}
                     />
 
+                    <label htmlFor="materialUsed" className="mainLabel">Material Used</label>
+                    <input id="materialUsed"
+                        type="text"
+                        name="materialUsed"
+                        required
+                        onChange={this.handleChange}
+                    />
+
                     <label htmlFor="printTime" className="mainLabel">Time to print (hours)</label>
                     <input id="printTime"
                         type="number" step="any"
