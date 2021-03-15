@@ -272,7 +272,7 @@ class ExpandedPrint extends React.Component {
                     <div className="close1"></div>
                     <div className="close2"></div>
                 </div>
-                <form onSubmit={this.handleSubmit}>
+                <form onSubmit={this.handleSubmit} autoComplete="off">
                     <label htmlFor="title" className="mainLabel">Title</label>
                     <input id="title"
                         type="text" name="title"

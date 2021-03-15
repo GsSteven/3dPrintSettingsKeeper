@@ -309,7 +309,7 @@ class NewDesign extends React.Component {
 
         return (
             <div className="newDesignWrapper">
-                <form onSubmit={this.handleSubmit}>
+                <form onSubmit={this.handleSubmit} autoComplete="off">
                     <label htmlFor="title" className="mainLabel">Title</label>
                     <input id="title"
                         type="text" name="title"
