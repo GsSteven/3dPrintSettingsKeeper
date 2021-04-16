@@ -19,7 +19,12 @@ const upload = multer({
         s3: s3,
         bucket: 'printsettings',
         acl: 'public-read',
-        contentType: multerS3.AUTO_CONTENT_TYPE,
+        contentType: (req, file, cb) => {
+            cb(null, file.mimetype);
+        },
+        contentDisposition: (req, file, cb) => {
+            cb(null, `attachment;`)
+        },
         metadata: (req, file, cb) => {
             cb(null, {
 

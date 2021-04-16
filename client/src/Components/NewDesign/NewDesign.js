@@ -125,11 +125,7 @@ class NewDesign extends React.Component {
     }
 
     checkFileName(name) {
-        if (name.indexOf(' ') !== -1) {
-            return true
-        } else {
-            return false
-        }
+        return (name.indexOf(' ') !== -1);
     }
 
     checkFileSize() {
@@ -254,10 +250,10 @@ class NewDesign extends React.Component {
                         console.error(e);
                     });
             }
+            //if files selected zip files and set link to payload
             if (payLoad.file) {
-                const zipAllFiles = this.zipFiles();
                 const fileData = new FormData();
-                fileData.append('image', await zipAllFiles);
+                fileData.append('image', await this.zipFiles());
                 await axios.post(`/api/upload`, fileData, { headers: { 'Content-Type': 'application/zip' }, params: mergeTitle })
                     .then(response => {
                         const fileUrl = response.data.imageUrl;
