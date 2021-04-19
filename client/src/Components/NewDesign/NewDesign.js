@@ -189,24 +189,30 @@ class NewDesign extends React.Component {
                 errorElement1.innerHTML = '';
             }
         } else if (setting === 'printFile') {
-            if (this.checkFileName(e.target.files[0].name)) {
-                errorElement2.innerHTML = "File names must not include space(s)";
-                return;
-            } else {
-                this.setState(() => {
-                    let filesArray;
-                    //if state has one file in add next file
-                    if (this.state.file) {
-                        filesArray = this.state.file.concat(e.target.files[0]);
-                        //else start the new array
+            //transfer files in object to files array
+            let files = [];
+            for (const file in e.target.files) {
+                if (e.target.files[file].size) {
+                    if (!this.checkFileName(e.target.files[file].name)) {
+                        files.push(e.target.files[file]);
                     } else {
-                        filesArray = [e.target.files[0]];
+                        errorElement2.innerHTML = "File names must not include space(s)";
                     }
-                    return {
-                        file: filesArray
-                    };
-                });
+                }
             }
+            this.setState(() => {
+                let filesArray;
+                //if state has one file in add next file
+                if (this.state.file) {
+                    filesArray = this.state.file.concat(files);
+                    //else start the new array
+                } else {
+                    filesArray = files;
+                }
+                return {
+                    file: filesArray
+                };
+            });
         } else {
             this.setState({ [setting]: value });
         }
@@ -340,8 +346,10 @@ class NewDesign extends React.Component {
                             </div>
                         }
                         <input id="printFile"
-                            type="file" name="printFile"
+                            type="file"
+                            name="printFile"
                             accept=".stl, .vrml"
+                            multiple
                             onChange={this.handleChange}
                         />
                         <p className="errorMessage2"></p>
