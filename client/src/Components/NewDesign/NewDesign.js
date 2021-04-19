@@ -220,6 +220,7 @@ class NewDesign extends React.Component {
 
     async handleSubmit(e) {
         e.preventDefault();
+        console.log('i am surbmitting');
         const mergeTitle = this.state.title.split(' ').join('_');
         const errorMessage3 = document.querySelector('.errorMessage3');
         const payLoad = {};
@@ -849,8 +850,11 @@ class NewDesign extends React.Component {
                         required
                         onChange={this.handleChange}
                     />
-                    <button id="submitButton"
-                        type='submit'>
+                    <button
+                        id="submitButton"
+                        type='submit'
+                        disabled={this.state.buttonDisplay === 'loading' || false}
+                    >
                         {this.buttonDisplay()}
                     </button>
                     <p className="errorMessage3"></p>
