@@ -3,13 +3,15 @@
     border: 2px solid black;
     width: 75%;
     height: 80%;
-    position: absolute;
+    max-height: 100vh;
+    position: fixed;
     padding: 2em 0;
-    left: 0;
-    right: 0;
-    margin: 0 auto;
+    top: 50%;
+    right: 50%;
+    transform: translate(50%, -50%);
     cursor: default;
-    overflow: scroll;
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 .closeButton {
