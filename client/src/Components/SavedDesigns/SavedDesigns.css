@@ -1,6 +1,7 @@
 .savedDesignsWrapper {
     background-image: url('../../images/background.jpg');
     background-size: cover;
+    padding-bottom: 2em;
 }
 
 .saved {
@@ -23,7 +24,7 @@
 
 .searchBox img {
     align-self: center;
-    height: 60px;
+    height: 50px;
 }
 
 .searchBar {
@@ -54,7 +55,14 @@
     min-height: 100vh;
     background-color: rgb(10, 40, 104);
     margin: 0 auto;
-    padding-bottom: 10em;
+    padding-bottom: 2em;
+    max-height: 100vh;
+    border-radius: 2px;
+    overflow-y: scroll;
+}
+
+.designs::-webkit-scrollbar {
+    display: none;
 }
 
 @media screen and (max-width: 1200px) {

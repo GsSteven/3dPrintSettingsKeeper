@@ -13,8 +13,7 @@ class SavedDesigns extends React.Component {
     };
     this.getPrints = this.getPrints.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.search = this.search.bind(this);
-    this.handleKeyPress = this.handleKeyPress.bind(this);
+    this.displayPrints = this.displayPrints.bind(this);
   }
 
   async getPrints() {
@@ -25,31 +24,44 @@ class SavedDesigns extends React.Component {
 
   handleChange(e) {
     const search = e.target.value;
-    if (search) {
-      this.setState({
-        searchQuery: search,
+    this.setState({
+      searchQuery: search,
+    });
+  }
+
+  displayPrints() {
+    let prints = [];
+    //return all prints if no query
+    if (!this.state.searchQuery) {
+      prints = this.state.prints.map((print) => {
+        return (
+          <Print
+            printSettings={print.printSettings}
+            id={print._id}
+            refresh={this.getPrints}
+            key={print._id}
+          />
+        );
       });
     } else {
-      this.getPrints();
+      //return filtered prints
+      const filteredPrints = this.state.prints.filter((print) => {
+        const printTitle = print.printSettings.title.toLowerCase();
+        const query = this.state.searchQuery.toLowerCase();
+        return printTitle.indexOf(query) !== -1;
+      });
+      prints = filteredPrints.map((print) => {
+        return (
+          <Print
+            printSettings={print.printSettings}
+            id={print._id}
+            refresh={this.getPrints}
+            key={print._id}
+          />
+        );
+      });
     }
-  }
-
-  search() {
-    const filteredPrints = this.state.prints.filter((print) => {
-      const printTitle = print.printSettings.title.toLowerCase();
-      const query = this.state.searchQuery.toLowerCase();
-      return printTitle.indexOf(query) !== -1;
-    });
-    this.setState({
-      prints: filteredPrints,
-    });
-  }
-
-  handleKeyPress(e) {
-    const keyChar = e.charCode;
-    if (keyChar === 13) {
-      this.search();
-    }
+    return prints;
   }
 
   componentDidMount() {
@@ -57,34 +69,20 @@ class SavedDesigns extends React.Component {
   }
 
   render() {
-    const prints = this.state.prints.map((print) => {
-      return (
-        <Print
-          printSettings={print.printSettings}
-          id={print._id}
-          refresh={this.getPrints}
-          key={print._id}
-        />
-      );
-    });
-
     return (
       <div className="savedDesignsWrapper">
         <h1 className="saved">
           <u>Saved</u>
         </h1>
-        <div className="searchBox" onKeyPress={this.handleKeyPress}>
+        <div className="searchBox">
           <img src={searchIcon} alt="search Icon" />
           <input
             type="text"
             className="searchBar"
             onChange={this.handleChange}
           />
-          <button type="button" className="searchButton" onClick={this.search}>
-            Search
-          </button>
         </div>
-        <div className="designs">{prints}</div>
+        <div className="designs">{this.displayPrints()}</div>
       </div>
     );
   }
