@@ -1,13 +1,13 @@
-.appWrapper {
-  background-color: rgb(245, 245, 245);
-}
-
 ::-webkit-scrollbar {
   width: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
   background-color: black;
+}
+
+.appWrapper {
+  background-color: rgb(245, 245, 245);
 }
 
 header {
