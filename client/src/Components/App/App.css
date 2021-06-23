@@ -2,6 +2,14 @@
   background-color: rgb(245, 245, 245);
 }
 
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: black;
+}
+
 header {
   display: grid;
   height: 12vh;
